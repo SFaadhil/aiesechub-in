@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/faadh/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/7e759537-3d39-445d-b7ba-319ef876ddbb/2392b9b6-983c-4748-8c41-d99195ac8d98/skills/docx/**)",
+      "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\faadh\\\\Downloads\\\\AIESEC_India_Hub_SRS.docx\" -o output.md)",
+      "Bash(python \"C:\\\\Users\\\\faadh\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\7e759537-3d39-445d-b7ba-319ef876ddbb\\\\2392b9b6-983c-4748-8c41-d99195ac8d98\\\\skills\\\\docx\\\\scripts\\\\office\\\\unpack.py\" \"C:\\\\Users\\\\faadh\\\\Downloads\\\\AIESEC_India_Hub_SRS.docx\" \"C:\\\\Users\\\\faadh\\\\Downloads\\\\srs_unpacked\")",
+      "Bash(pip install *)",
+      "PowerShell(pip install defusedxml -q)",
+      "PowerShell(python \"C:\\\\Users\\\\faadh\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\7e759537-3d39-445d-b7ba-319ef876ddbb\\\\2392b9b6-983c-4748-8c41-d99195ac8d98\\\\skills\\\\docx\\\\scripts\\\\office\\\\unpack.py\" \"C:\\\\Users\\\\faadh\\\\Downloads\\\\AIESEC_India_Hub_SRS.docx\" \"C:\\\\Users\\\\faadh\\\\Downloads\\\\srs_unpacked\" 2>&1)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\faadh\\\\OneDrive\\\\Desktop\\\\IXP DSP\\\\aiesechub.in\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/aiesec-way)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(npx next *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\faadh\\\\OneDrive\\\\Desktop\\\\IXP DSP\\\\aiesechub.in\\\\public\" -Recurse | Where-Object { !$_.PSIsContainer } | ForEach-Object { $_.FullName })",
+      "WebSearch",
+      "WebFetch(domain:ui.shadcn.com)",
+      "WebFetch(domain:www.shadcn.io)",
+      "mcp__mcp-registry__list_connectors",
+      "mcp__mcp-registry__search_mcp_registry",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npm list *)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"internal hub dashboard youth organisation navigation cards\" --design-system -p \"AIESEC India Hub\")",
+      "Bash(python \"/c/Users/faadh/OneDrive/Desktop/IXP DSP/aiesechub.in/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"internal hub dashboard youth organisation navigation cards\" --design-system -p \"AIESEC India Hub\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(curl -s \"http://localhost:3000\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/functional-hub/pm)",
+      "Bash(curl -s http://localhost:3000/functional-hub/pm)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/functional-hub/pm)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/aiesec-india)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/aiesec-way)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(gh auth *)",
+      "Bash(git config *)",
+      "PowerShell(winget --version 2>&1)",
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"PATH\", \"User\"\\); gh auth status 2>&1)"
+    ]
+  }
+}
