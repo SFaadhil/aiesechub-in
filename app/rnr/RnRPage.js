@@ -309,9 +309,9 @@ function DashboardSection() {
                   const lcTiers = LC_PORTFOLIO_TIERS[row.lc] || {};
                   return (
                     <tr key={row.lc}
-                      style={{ borderBottom:'1px solid var(--border)', transition:'background 0.1s' }}
+                      style={{ borderBottom:'1px solid var(--border)', transition:'background 0.1s', background:'var(--surface)' }}
                       onMouseEnter={(e) => e.currentTarget.style.background='var(--bg-alt)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background=''}
+                      onMouseLeave={(e) => e.currentTarget.style.background='var(--surface)'}
                     >
                       <td style={{ ...TD, textAlign:'center', fontWeight:700, color:'var(--text-3)', position:'sticky', left:0, background:'inherit', zIndex:1 }}>
                         {row.entityRank}
