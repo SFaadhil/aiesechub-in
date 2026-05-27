@@ -1411,3 +1411,14 @@ img { transition: opacity 0.3s ease; }
     transform: none !important;
   }
 }
+
+/* ── Dashboard table: sticky column backgrounds ─────────────────────────────
+   background:inherit on sticky <td> is unreliable in table stacking contexts.
+   Drive the fill with CSS instead so the columns are always opaque.          */
+.dashboard-row .sticky-col {
+  background: var(--surface);
+  transition: background 0.1s;
+}
+.dashboard-row:hover .sticky-col {
+  background: var(--bg-alt);
+}
