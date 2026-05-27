@@ -4,7 +4,8 @@ import { useState, useMemo, Fragment } from 'react';
 import {
   PORTFOLIOS, RECOGNITION_PORTFOLIOS, TIER_PORTFOLIOS,
   TIERS, TIER_META, TIERS_BY_PORTFOLIO, LC_PORTFOLIO_TIERS,
-  DASHBOARD_DATA, MONTHS, RNR_METRICS, METRICS_ORDER, getRecognitionData,
+  MONTHS_LIST, RNR_METRICS, METRICS_ORDER,
+  getDashboardDataForMonth, getRecognitionData,
 } from '@/lib/rnr-data';
 import PageOffline from '@/components/PageOffline';
 
@@ -145,8 +146,9 @@ function HeroSection() {
 function DashboardSection() {
   const [search, setSearch]         = useState('');
   const [activeTier, setActiveTier] = useState('All');
+  const [activeMonth, setActiveMonth] = useState(MONTHS_LIST[MONTHS_LIST.length - 1].key);
   const [visiblePf, setVisiblePf]   = useState(
-    new Set(['iGV','oGV','iGTa','iGTe','oGTa','MKT','BD','PM','FnL'])
+    new Set(['Entity','iGV','oGV','iGTa','iGTe','oGTa','MKT','BD','PM','FnL'])
   );
 
   function togglePortfolio(key) {
@@ -158,11 +160,13 @@ function DashboardSection() {
     });
   }
 
-  const filtered = useMemo(() => DASHBOARD_DATA.filter((row) => {
+  const dashboardRows = useMemo(() => getDashboardDataForMonth(activeMonth), [activeMonth]);
+
+  const filtered = useMemo(() => dashboardRows.filter((row) => {
     const matchSearch = !search || row.lc.toLowerCase().includes(search.toLowerCase());
     const matchTier   = activeTier === 'All' || row.entityTier === activeTier;
     return matchSearch && matchTier;
-  }), [search, activeTier]);
+  }), [dashboardRows, search, activeTier]);
 
   const visiblePortfolios = PORTFOLIOS.filter((p) => visiblePf.has(p.key));
 
@@ -222,18 +226,42 @@ function DashboardSection() {
             </div>
           </div>
 
+          {/* Month filter */}
+          <div style={{ marginTop:12, paddingTop:12, borderTop:'1px solid var(--border)' }}>
+            <span style={{ fontSize:11, fontWeight:600, color:'var(--text-3)', marginRight:10, textTransform:'uppercase', letterSpacing:'0.5px' }}>Month:</span>
+            {MONTHS_LIST.map((m) => {
+              const active = activeMonth === m.key;
+              return (
+                <button key={m.key} onClick={() => setActiveMonth(m.key)} style={{
+                  fontSize:11, fontWeight:700, cursor:'pointer', borderRadius:20,
+                  padding:'4px 12px', marginRight:6,
+                  border:`1px solid ${active ? ACCENT : 'var(--border)'}`,
+                  background: active ? `${ACCENT}15` : 'transparent',
+                  color: active ? ACCENT : 'var(--text-3)',
+                  transition:'all 0.15s',
+                }}>
+                  {m.label}
+                </button>
+              );
+            })}
+          </div>
+
           {/* Portfolio toggles */}
           <div style={{ marginTop:12, paddingTop:12, borderTop:'1px solid var(--border)' }}>
             <span style={{ fontSize:11, fontWeight:600, color:'var(--text-3)', marginRight:10, textTransform:'uppercase', letterSpacing:'0.5px' }}>Portfolios:</span>
             {PORTFOLIOS.map((p) => {
               const on = visiblePf.has(p.key);
+              // Entity uses near-black — swap to amber accent so the chip is legible
+              const chipColor = on
+                ? (p.key === 'Entity' ? ACCENT : p.color)
+                : 'var(--text-3)';
               return (
                 <button key={p.key} onClick={() => togglePortfolio(p.key)} style={{
                   fontSize:11, fontWeight:700, cursor:'pointer', borderRadius:6,
                   padding:'3px 9px', marginRight:5, marginBottom:4,
-                  border:`1px solid ${on ? p.color : 'var(--border)'}`,
-                  background: on ? `${p.color}18` : 'transparent',
-                  color: on ? p.color : 'var(--text-3)',
+                  border:`1px solid ${on ? chipColor : 'var(--border)'}`,
+                  background: on ? `${chipColor}18` : 'transparent',
+                  color: chipColor,
                   transition:'all 0.15s',
                 }}>
                   {p.label}
@@ -251,19 +279,15 @@ function DashboardSection() {
                 <tr style={{ background:'var(--bg-alt)', borderBottom:'2px solid var(--border)' }}>
                   <th style={{ ...TH, textAlign:'center', width:48, position:'sticky', left:0, background:'var(--bg-alt)', zIndex:2 }}>#</th>
                   <th style={{ ...TH, minWidth:190, position:'sticky', left:48, background:'var(--bg-alt)', zIndex:2 }}>Local Committee</th>
-                  <th style={{ ...TH, textAlign:'center', minWidth:90 }}>Entity Tier</th>
-                  <th style={{ ...TH, textAlign:'right', minWidth:60 }}>Total</th>
                   {visiblePortfolios.map((p) => (
                     <th key={p.key} colSpan={3} style={{ ...TH, textAlign:'center', minWidth:140, borderLeft:'1px solid var(--border)' }}>
-                      <span style={{ color:p.color }}>{p.label}</span>
+                      <span style={{ color: p.key === 'Entity' ? ACCENT : p.color }}>{p.label}</span>
                     </th>
                   ))}
                 </tr>
                 <tr style={{ background:'var(--bg-alt)', borderBottom:'1px solid var(--border)' }}>
                   <th style={{ ...STH, position:'sticky', left:0, background:'var(--bg-alt)', zIndex:2 }} />
                   <th style={{ ...STH, position:'sticky', left:48, background:'var(--bg-alt)', zIndex:2 }} />
-                  <th style={STH} />
-                  <th style={STH} />
                   {visiblePortfolios.map((p) => (
                     <Fragment key={p.key}>
                       <th style={{ ...STH, textAlign:'center', borderLeft:'1px solid var(--border)' }}>Tier</th>
@@ -276,7 +300,7 @@ function DashboardSection() {
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={4 + visiblePortfolios.length * 3}
+                    <td colSpan={2 + visiblePortfolios.length * 3}
                       style={{ textAlign:'center', padding:32, color:'var(--text-3)', fontSize:13 }}>
                       No LCs match your filters.
                     </td>
@@ -295,12 +319,6 @@ function DashboardSection() {
                       <td style={{ ...TD, fontWeight:600, position:'sticky', left:48, background:'inherit', zIndex:1 }}>
                         {row.lc.replace('AIESEC in ', '')}
                         <div style={{ fontSize:10, color:'var(--text-3)', fontWeight:400 }}>{row.lc}</div>
-                      </td>
-                      <td style={{ ...TD, textAlign:'center' }}>
-                        <TierBadge tier={row.entityTier} small />
-                      </td>
-                      <td style={{ ...TD, textAlign:'right', fontWeight:700, color:ACCENT }}>
-                        {row.totalPoints}
                       </td>
                       {visiblePortfolios.map((p) => {
                         const pData     = row.portfolios[p.key];
@@ -322,10 +340,10 @@ function DashboardSection() {
                               )}
                             </td>
                             <td style={{ ...TD, textAlign:'center', color:'var(--text-3)', fontSize:11 }}>
-                              #{pData.rank}
+                              {pData ? `#${pData.rank}` : '—'}
                             </td>
                             <td style={{ ...TD, textAlign:'right', fontWeight:600 }}>
-                              {pData.points}
+                              {pData ? pData.points : 0}
                             </td>
                           </Fragment>
                         );
@@ -337,10 +355,6 @@ function DashboardSection() {
             </table>
           </div>
         </div>
-
-        <p style={{ fontSize:12, color:'var(--text-3)', marginTop:10 }}>
-          * Points are placeholder values. Tier badges show each LC&apos;s tier in that specific portfolio. Real data updated monthly.
-        </p>
       </div>
     </section>
   );
@@ -348,7 +362,7 @@ function DashboardSection() {
 
 function RecognitionSection() {
   const [selectedPortfolio, setSelectedPortfolio] = useState('Entity');
-  const [selectedMonth, setSelectedMonth]         = useState(MONTHS[MONTHS.length - 1]);
+  const [selectedMonth, setSelectedMonth]         = useState(MONTHS_LIST[MONTHS_LIST.length - 1].key);
 
   const recData  = useMemo(() => getRecognitionData(selectedPortfolio, selectedMonth), [selectedPortfolio, selectedMonth]);
   const portfolio = RECOGNITION_PORTFOLIOS.find((p) => p.key === selectedPortfolio) || RECOGNITION_PORTFOLIOS[0];
@@ -374,7 +388,7 @@ function RecognitionSection() {
           <div>
             <label style={{ fontSize:11, fontWeight:700, color:'var(--text-3)', display:'block', marginBottom:4, textTransform:'uppercase', letterSpacing:'0.5px' }}>Month</label>
             <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} style={SEL}>
-              {MONTHS.map((m) => <option key={m} value={m}>{m}</option>)}
+              {MONTHS_LIST.map((m) => <option key={m.key} value={m.key}>{m.label}</option>)}
             </select>
           </div>
         </div>
@@ -393,7 +407,7 @@ function RecognitionSection() {
                   <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
                     <div>
                       <span style={{ fontSize:14, fontWeight:800, color }}>{tier}</span>
-                      <span style={{ fontSize:11, color:'var(--text-3)', display:'block', marginTop:2 }}>{label}</span>
+                      {label && <span style={{ fontSize:11, color:'var(--text-3)', display:'block', marginTop:2 }}>{label}</span>}
                     </div>
                     <span style={{
                       fontSize:10, fontWeight:700, color, background:`${color}15`,
@@ -406,20 +420,17 @@ function RecognitionSection() {
                   {lcs.length === 0 ? (
                     <p style={{ fontSize:12.5, color:'var(--text-3)', margin:0, fontStyle:'italic' }}>No recognitions for this selection.</p>
                   ) : (
-                    <>
-                      <ul style={{ listStyle:'none', padding:0, margin:0 }}>
-                        {lcs.map((lc) => (
-                          <li key={lc} style={{
-                            fontSize:12.5, color:'var(--text-2)', padding:'5px 0',
-                            borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:8,
-                          }}>
-                            <span style={{ width:6, height:6, borderRadius:'50%', background:color, flexShrink:0, display:'inline-block' }} />
-                            {lc}
-                          </li>
-                        ))}
-                      </ul>
-                      <p style={{ fontSize:11, color:'var(--text-3)', marginTop:10, marginBottom:0 }}>Placeholder · updated monthly</p>
-                    </>
+                    <ul style={{ listStyle:'none', padding:0, margin:0 }}>
+                      {lcs.map((lc) => (
+                        <li key={lc} style={{
+                          fontSize:12.5, color:'var(--text-2)', padding:'5px 0',
+                          borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:8,
+                        }}>
+                          <span style={{ width:6, height:6, borderRadius:'50%', background:color, flexShrink:0, display:'inline-block' }} />
+                          {lc}
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               </div>
@@ -484,7 +495,7 @@ function TiersSection() {
                 }}>
                   <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:10 }}>
                     <span style={{ fontSize:15, fontWeight:800, color }}>{tier}</span>
-                    <span style={{ fontSize:11, color:'var(--text-3)', fontWeight:500 }}>{label}</span>
+                    {label && <span style={{ fontSize:11, color:'var(--text-3)', fontWeight:500 }}>{label}</span>}
                   </div>
 
                   {lcs.length === 0 ? (
@@ -517,7 +528,7 @@ function TiersSection() {
           background:'rgba(139,154,176,0.08)', border:'1px solid rgba(139,154,176,0.2)',
           borderRadius:'var(--radius-sm)', fontSize:12.5, color:'var(--text-3)',
         }}>
-          <strong style={{ color:'var(--text-2)' }}>Tier X</strong> — Entities that have not met the minimum thresholds for the current term.
+          <strong style={{ color:'var(--text-2)' }}>Note</strong> — 
           A portfolio may not be recognised for any month if they fail respective product audits.
         </div>
       </div>
