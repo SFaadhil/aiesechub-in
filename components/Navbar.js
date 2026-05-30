@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { HUBS } from '@/lib/data';
+import { searchIndex, GROUP_META } from '@/lib/search-index';
+import { loadDynamicSearchEntries } from '@/lib/search-loader';
 
 const NAV_LINKS_BEFORE = [
   { href: '/aiesec-india', label: 'AIESEC in India' },
@@ -57,9 +59,32 @@ function NavLink({ href, label, pathname }) {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query,      setQuery]      = useState('');
-  const [scrolled,   setScrolled]   = useState(false);
+  const [searchOpen,    setSearchOpen]    = useState(false);
+  const [query,         setQuery]         = useState('');
+  const [scrolled,      setScrolled]      = useState(false);
+  const [sheetEntries,  setSheetEntries]  = useState([]);
+  const [sheetsLoaded,  setSheetsLoaded]  = useState(false);
+
+  const grouped = useMemo(() => {
+    const flat = searchIndex(query, sheetEntries);
+    if (!flat.length) return [];
+    const map = {};
+    flat.forEach((item) => {
+      const g = item.group || 'pages';
+      if (!map[g]) map[g] = [];
+      if (map[g].length < 6) map[g].push(item);
+    });
+    return Object.entries(map)
+      .sort(([a], [b]) => (GROUP_META[a]?.order ?? 99) - (GROUP_META[b]?.order ?? 99))
+      .map(([g, items]) => ({ group: g, label: GROUP_META[g]?.label || g, items }));
+  }, [query, sheetEntries]);
+
+  function closeSearch() { setSearchOpen(false); setQuery(''); }
+
+  function openSearch(initialQuery = '') {
+    setSearchOpen(true);
+    if (initialQuery) setQuery(initialQuery);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -68,12 +93,30 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setSearchOpen(false); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') { closeSearch(); return; }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  useEffect(() => { setSearchOpen(false); }, [pathname]);
+  useEffect(() => {
+    const handler = (e) => openSearch(e.detail?.query || '');
+    window.addEventListener('site:openSearch', handler);
+    return () => window.removeEventListener('site:openSearch', handler);
+  }, []);
+
+  useEffect(() => { setSearchOpen(false); setQuery(''); }, [pathname]);
+
+  // Load sheet data once on first open
+  useEffect(() => {
+    if (!searchOpen || sheetsLoaded) return;
+    setSheetsLoaded(true);
+    loadDynamicSearchEntries().then((entries) => {
+      if (entries.length) setSheetEntries(entries);
+    });
+  }, [searchOpen, sheetsLoaded]);
 
   return (
     <>
@@ -167,13 +210,13 @@ export default function Navbar() {
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
 
-              {/* Search icon only */}
+              {/* Search icon */}
               <li className="nav-item ms-lg-2 d-flex align-items-center">
                 <button
                   className="nav-icon-btn"
-                  onClick={() => setSearchOpen(true)}
+                  onClick={() => openSearch()}
                   aria-label="Open search"
-                  title="Search"
+                  title="Search (⌘K)"
                 >
                   <SearchIcon />
                 </button>
@@ -187,33 +230,117 @@ export default function Navbar() {
       {/* ── Search overlay ── */}
       <div
         className={`search-overlay${searchOpen ? ' open' : ''}`}
-        onClick={(e) => { if (e.target === e.currentTarget) setSearchOpen(false); }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Search"
+        onClick={(e) => { if (e.target === e.currentTarget) closeSearch(); }}
+        role="dialog" aria-modal="true" aria-label="Search"
       >
         <div className="search-overlay-box">
-          <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 style={{ fontWeight: 700, fontSize: 16, margin: 0, color: 'var(--text)' }}>Search</h5>
-            <button
-              className="search-close-btn"
-              onClick={() => setSearchOpen(false)}
-              aria-label="Close search"
-            >
+
+          {/* Header row */}
+          <div className="d-flex align-items-center gap-3 mb-3">
+            <div style={{ position: 'relative', flex: 1 }}>
+              <span style={{
+                position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)',
+                color: 'var(--text-3)', pointerEvents: 'none', display: 'flex',
+              }}>
+                <SearchIcon />
+              </span>
+              <input
+                className="search-box-input"
+                type="search"
+                placeholder="Search everything — hubs, resources, LCs, people, policies…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                autoFocus={searchOpen}
+                style={{ paddingLeft: 40 }}
+              />
+            </div>
+            <button className="search-close-btn" onClick={closeSearch} aria-label="Close search" style={{ flexShrink: 0 }}>
               <CloseIcon />
             </button>
           </div>
-          <input
-            className="search-box-input"
-            type="search"
-            placeholder="Search hubs, resources, pages…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus={searchOpen}
-          />
-          <p style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 12, marginBottom: 0, textAlign: 'center' }}>
-            Full-text search will be connected in Phase 2
-          </p>
+
+          {/* Empty state */}
+          {!query && (
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 10 }}>
+                Try searching for
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {['Faadhil', 'iGV Hub', 'Compendium', 'Tier 1', 'Finance Policy', 'Hyderabad', 'NEC 2019', 'Board of Advisors'].map((hint) => (
+                  <button key={hint} onClick={() => setQuery(hint)} style={{
+                    fontSize: 12, fontWeight: 500, color: 'var(--text-2)',
+                    background: 'var(--bg-alt)', border: '1px solid var(--border)',
+                    borderRadius: 20, padding: '4px 13px', cursor: 'pointer',
+                    transition: 'border-color 150ms, background 150ms',
+                  }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
+                  >
+                    {hint}
+                  </button>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 16, marginBottom: 0 }}>
+                Press <kbd style={{ background:'var(--bg-alt)', border:'1px solid var(--border)', borderRadius:4, padding:'1px 5px', fontSize:10 }}>Esc</kbd> to close
+              </p>
+            </div>
+          )}
+
+          {/* Results */}
+          {query.trim().length >= 2 && (
+            <div style={{ maxHeight: 460, overflowY: 'auto', marginTop: 4 }}>
+              {grouped.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '32px 0' }}>
+                  <div style={{ fontSize: 28, marginBottom: 8 }}>🔍</div>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', margin: 0 }}>No results for &ldquo;{query}&rdquo;</p>
+                  <p style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>Try a different keyword or browse the sections above</p>
+                </div>
+              ) : (
+                grouped.map(({ group, label, items }) => (
+                  <div key={group} style={{ marginBottom: 18 }}>
+                    <p style={{
+                      fontSize: 10.5, fontWeight: 700, color: 'var(--text-3)',
+                      textTransform: 'uppercase', letterSpacing: '0.7px',
+                      margin: '0 0 6px', padding: '0 4px',
+                    }}>
+                      {label}
+                    </p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                      {items.map((item) => (
+                        <li key={item.id}>
+                          <Link href={item.href} onClick={closeSearch} className="search-result-row"
+                            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10,
+                              padding: '8px 10px', borderRadius: 8 }}>
+                            <span style={{
+                              fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap',
+                              color: item.accent, background: `${item.accent}15`,
+                              border: `1px solid ${item.accent}28`,
+                              borderRadius: 10, padding: '2px 8px', flexShrink: 0, minWidth: 56, textAlign: 'center',
+                            }}>
+                              {item.badge}
+                            </span>
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3,
+                                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {item.title}
+                              </div>
+                              {item.desc && (
+                                <div style={{ fontSize: 11.5, color: 'var(--text-3)', marginTop: 1,
+                                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {item.desc}
+                                </div>
+                              )}
+                            </div>
+                            <span style={{ color: 'var(--text-3)', flexShrink: 0, fontSize: 12 }}>→</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

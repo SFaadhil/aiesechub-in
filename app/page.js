@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import HubCard from '@/components/HubCard';
 import ScrollReveal from '@/components/ScrollReveal';
+import HeroSearch from '@/components/HeroSearch';
 import { HUBS } from '@/lib/data';
 import PageOffline from '@/components/PageOffline';
 
@@ -104,21 +105,7 @@ export default function HomePage() {
             </p>
 
             {/* Search */}
-            <div className="hero-search animate-fade-up delay-3">
-              <span className="hero-search-icon" aria-hidden="true">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="2.2"
-                  strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-              </span>
-              <input
-                type="search"
-                placeholder="Search hubs, resources, pages…"
-                aria-label="Search"
-              />
-            </div>
+            <HeroSearch />
 
             {/* Stats bar */}
             <div className="hero-stats animate-fade-up delay-5">

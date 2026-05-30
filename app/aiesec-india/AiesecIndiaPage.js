@@ -2,62 +2,14 @@
 
 import ScrollReveal from '@/components/ScrollReveal';
 import PageOffline from '@/components/PageOffline';
+import { MC, ADVISORS } from '@/lib/aiesec-india-data';
 
 const PAGE_STATUS_LIVE = true;
-
-const COMPENDIUM = [
-  { name: 'Main Compendium',                                     file: 'Main Compendium.docx.pdf',                                          main: true },
-  { letter: 'A', name: 'Brand Standardization',                 file: 'A_Brand Standardization (Brand and IM).pdf' },
-  { letter: 'B', name: 'Code of Ethics',                        file: 'B_Code of Ethics (Legal and Governance).docx.pdf' },
-  { letter: 'C', name: 'Election and Selection Procedure',      file: 'C_Election and Selection Procedure (AIESEC India).docx.pdf' },
-  { letter: 'D', name: 'Legislative Procedures',                file: 'D_Legislative Procedures.docx.pdf' },
-  { letter: 'E', name: 'HR Policy',                             file: 'E_HR Policy.docx.pdf' },
-  { letter: 'F', name: 'Limited Period Motions and Mandates',   file: 'F_Limited Period Motions and Mandates.docx.pdf' },
-  { letter: 'G', name: 'Entity Membership',                     file: 'G_Entity Membership.pdf' },
-  { letter: 'H', name: 'Partnership Principles and MC List',    file: 'H_Partnership Principles and MC List.docx.pdf' },
-  { letter: 'I', name: 'Product Policies Sub-Document (OPSC)',  file: 'I_Product Policies Sub-Document _ OPSC.docx.pdf' },
-  { letter: 'J', name: 'National / Regional Meetings & Conferences', file: 'J_National_Regional Meetings & Conferences.docx.pdf' },
-  { letter: 'K', name: 'Roles and Responsibilities',            file: 'K_Roles and Responsibilities.docx.pdf' },
-  { letter: 'L', name: 'Reserve Policy',                        file: 'L_Reserve Policy.docx.pdf' },
-  { letter: 'M', name: 'Internal Audit Board Charter',          file: 'M_Internal Audit Board Charter.docx.pdf' },
-  { letter: 'N', name: 'Parent LC Services Model',              file: 'N_ Parent LC Services Model.docx.pdf' },
-  { letter: 'O', name: 'MC Service Model',                      file: 'O_MC Service Model.pdf' },
-  { letter: 'P', name: 'AIESEC Portfolio Internal Policies',    file: 'P_AIESEC Portfolio Internal Policies Last Update IC 2025.pdf' },
-  { letter: 'Q', name: 'Anti Sexual Harassment Policy',         file: 'Q_Anti Sexual Harassment Policy.docx.pdf' },
-  { letter: 'R', name: 'Quality Control and Assurance Sub-Document (OPSC)', file: 'R_Quality Control and Assurance Sub-Document _ OPSC.docx.pdf' },
-  { letter: 'S', name: 'Finance Policy',                        file: 'S_Finance Policy.docx.pdf' },
-];
-
-const MC = [
-  { name: 'S Faadhil Mahboob', role: 'MCVP Digital Experience & Information Management', shortRole: 'DXP & IM', phone: '+91 6374250424', dotIn: 'faadhil.mahboob@aiesec.in',  dotId: 'faadhil.mahboob@aiesecmember.in' },
-  { name: 'Misna Khatun',       role: 'MCVP People Management',                                  shortRole: 'PM',                       phone: '+91 7717353509', dotIn: 'misna.khatun@aiesec.in',          dotId: 'misna.khatun@aiesecmember.in', ext: 'png' },
-  { name: 'MC Member 3',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member3@aiesec.in',          dotId: 'member3@aiesecmember.in' },
-  { name: 'MC Member 4',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member4@aiesec.in',          dotId: 'member4@aiesecmember.in' },
-  { name: 'MC Member 5',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member5@aiesec.in',          dotId: 'member5@aiesecmember.in' },
-  { name: 'MC Member 6',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member6@aiesec.in',          dotId: 'member6@aiesecmember.in' },
-  { name: 'MC Member 7',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member7@aiesec.in',          dotId: 'member7@aiesecmember.in' },
-  { name: 'MC Member 8',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member8@aiesec.in',          dotId: 'member8@aiesecmember.in' },
-  { name: 'MC Member 9',       role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member9@aiesec.in',          dotId: 'member9@aiesecmember.in' },
-  { name: 'MC Member 10',      role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member10@aiesec.in',         dotId: 'member10@aiesecmember.in' },
-  { name: 'MC Member 11',      role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member11@aiesec.in',         dotId: 'member11@aiesecmember.in' },
-  { name: 'MC Member 12',      role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member12@aiesec.in',         dotId: 'member12@aiesecmember.in' },
-  { name: 'MC Member 13',      role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member13@aiesec.in',         dotId: 'member13@aiesecmember.in' },
-  { name: 'MC Member 14',      role: 'Role Placeholder',                                  shortRole: null,                       phone: '+91 0000000000', dotIn: 'member14@aiesec.in',         dotId: 'member14@aiesecmember.in' },
-];
 
 function mcImg(member) {
   if (!member.shortRole) return null;
   return `/images/mcvp/${member.name} - ${member.shortRole}.${member.ext ?? 'jpg'}`;
 }
-
-const ADVISORS = [
-  { name: 'S Faadhil Mahboob', designation: 'Head of Digital Experience and Information Management, AIESEC in India', img: '/images/board-of-advisors/faadhil.jpg' },
-  { name: 'Advisor 2',         designation: 'Designation Placeholder', img: 'https://placehold.co/300x400/e2e8f0/64748b?text=Photo' },
-  { name: 'Advisor 3',         designation: 'Designation Placeholder', img: 'https://placehold.co/300x400/e2e8f0/64748b?text=Photo' },
-  { name: 'Advisor 4',         designation: 'Designation Placeholder', img: 'https://placehold.co/300x400/e2e8f0/64748b?text=Photo' },
-  { name: 'Advisor 5',         designation: 'Designation Placeholder', img: 'https://placehold.co/300x400/e2e8f0/64748b?text=Photo' },
-  { name: 'Advisor 6',         designation: 'Designation Placeholder', img: 'https://placehold.co/300x400/e2e8f0/64748b?text=Photo' },
-];
 
 function PdfIcon() {
   return (
