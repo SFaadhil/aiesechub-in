@@ -86,8 +86,8 @@ Defined in `lib/rnr-data.js` as `TIER_META`. Used for tier badges, card backgrou
 | Tier 1 | National Titans | `#f59e0b` (gold) | `#fef9ee` |
 | Tier 2 | Rising Stars | `#94a3b8` (silver) | `#f8fafc` |
 | Tier 3 | Challengers | `#cd7f32` (bronze) | `#fdf6ee` |
-| Tier 4 | Builders | `#7552CC` (purple) | `#f5f3ff` |
-| Tier 5 | Explorers | `#0CB9C1` (teal) | `#f0fafb` |
+| Tier 4 | Builders | `#e11d48` (rose) | `#fff1f4` |
+| Tier 5 | Explorers | `#10b981` (emerald) | `#f0fdf8` |
 | Tier X | Below Minimum | `#8b9ab0` (grey) | `#f8fafc` |
 
 Leaderboard rank borders: gold `#f59e0b` · silver `#94a3b8` · bronze `#cd7f32` (applied via `.rank-gold`, `.rank-silver`, `.rank-bronze`).
@@ -284,7 +284,7 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 | RnR page | `LC_PORTFOLIO_TIERS` computed as reverse map from `TIERS_BY_PORTFOLIO` for O(1) tier lookups |
 | RnR page | Entity tier added as a tab/column alongside portfolio tiers; oGTe removed entirely (no data) |
 | RnR page | Dashboard shows 3 sub-columns per portfolio (Tier badge, Rank, Points) with per-LC per-portfolio tier |
-| RnR page | Tier color system: gold T1, silver T2, bronze T3, purple T4, teal T5, grey TX |
+| RnR page | Tier color system: gold T1, silver T2, bronze T3, rose T4, emerald T5, grey TX |
 | RnR page | Portfolio order standardised globally: Entity → iGV → oGV → iGTa → iGTe → oGTa → MKT → BD → PM → FnL → Expansions |
 | RnR page | iGV, iGTa, iGTe added to Metrics section (were missing from first build) |
 | Navbar redesign | Replaced gradient "AI" square logo with inline SVG AIESEC walking figure (blue, `#037ef3`) |

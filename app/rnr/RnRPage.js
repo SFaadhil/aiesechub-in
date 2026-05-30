@@ -4,7 +4,7 @@ import { useState, useMemo, Fragment } from 'react';
 import {
   PORTFOLIOS, RECOGNITION_PORTFOLIOS, TIER_PORTFOLIOS,
   TIERS, TIER_META, TIERS_BY_PORTFOLIO, LC_PORTFOLIO_TIERS,
-  MONTHS_LIST, RNR_METRICS, METRICS_ORDER,
+  MONTHS_LIST, RNR_METRICS, METRICS_ORDER, MONTHLY_POINTS,
   getDashboardDataForMonth, getRecognitionData,
 } from '@/lib/rnr-data';
 import PageOffline from '@/components/PageOffline';
@@ -365,6 +365,10 @@ function RecognitionSection() {
 
   const recData  = useMemo(() => getRecognitionData(selectedPortfolio, selectedMonth), [selectedPortfolio, selectedMonth]);
   const portfolio = RECOGNITION_PORTFOLIOS.find((p) => p.key === selectedPortfolio) || RECOGNITION_PORTFOLIOS[0];
+  const pfPts    = useMemo(() => {
+    const pfKey = selectedPortfolio === 'Entity' ? 'entity' : selectedPortfolio;
+    return (MONTHLY_POINTS[selectedMonth] || {})[pfKey] || {};
+  }, [selectedPortfolio, selectedMonth]);
 
   return (
     <section className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
@@ -426,7 +430,12 @@ function RecognitionSection() {
                           borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:8,
                         }}>
                           <span style={{ width:6, height:6, borderRadius:'50%', background:color, flexShrink:0, display:'inline-block' }} />
-                          {lc}
+                          <span style={{ flex:1 }}>{lc}</span>
+                          {pfPts[lc] != null && (
+                            <span style={{ fontSize:11.5, fontWeight:700, color, whiteSpace:'nowrap' }}>
+                              {pfPts[lc].toLocaleString()} pts
+                            </span>
+                          )}
                         </li>
                       ))}
                     </ul>
