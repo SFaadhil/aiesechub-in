@@ -320,7 +320,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
                 className={isMain ? 'col-12' : 'col-12 col-sm-6 col-md-4 col-lg-3'}
                 style={{ display: 'flex' }}
               >
-                <ScrollReveal delay={Math.min((i % 5) + 1, 6)} className="w-100">
+                <ScrollReveal delay={Math.min((i % 5) + 1, 6)} className="w-100 h-100">
                   <a
                     href={href}
                     target="_blank"
@@ -331,6 +331,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
                       flexDirection: 'row',
                       gap: 12,
                       width: '100%',
+                      height: '100%',
                       background: 'var(--primary)',
                       color: '#fff',
                       borderRadius: 'var(--radius-md)',
