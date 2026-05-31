@@ -623,7 +623,7 @@ function MetricsSection() {
               </div>
             </div>
             <p style={{ fontSize:12, color:'var(--text-3)', marginTop:12 }}>
-              Data verified monthly via Expa, Finance Audits, and respective tracking tools. Contact the MCVP for any discrepancies.
+              Data verified monthly via Expa, Monthly Audits, and respective tracking tools. Contact the MCVP for any discrepancies.
             </p>
           </>
         ) : (

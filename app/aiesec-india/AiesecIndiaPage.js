@@ -65,7 +65,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
             color: 'rgba(255,255,255,0.80)', marginTop: 16,
             maxWidth: 600, lineHeight: 1.65,
           }}>
-            Developing the leadership potential of young people since 1959.
+            Developing the leadership potential of young people since 1981.
             One of the largest youth-run organisations in the world.
           </p>
         </div>
@@ -76,18 +76,17 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
         <div className="ai-inset">
           <ScrollReveal>
             <p style={{ fontSize: 17, lineHeight: 1.85, color: 'var(--text-2)' }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              AIESEC in India is one of the largest and the most impactful national entities of AIESEC;
+              The world's largest youth run organisation operating across 120+ countries. With over 23 Local Committees spanning universities all across India,
+              we form a network of 2500+ active young leaders united by a single purpose;
+              developing leadership and enabiling cross cultural exchanges.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <p style={{ fontSize: 17, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 20 }}>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit
-              voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab
-              illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              We believe in the power of young people to drive meaningful change. Every year, AIESEC in India has faciliated X+ exchanges, 
+              sending Indian youth abroad and welcoming international participants to work, volunteer, and grow across.
+              Beyond exchanges, we develop 2500+ leaders annually through our structured programs, national conferences, and functional portfolio work.
             </p>
           </ScrollReveal>
         </div>
@@ -111,22 +110,24 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
           </ScrollReveal>
           <ScrollReveal delay={1}>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)' }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              AIESEC in India was established in the year 1981. What began as a small chapter with X founding Local committees,
+              has grown over four decaded into a naitonwide movement of young leaders.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 16 }}>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit
-              voluptatem accusantium doloremque laudantium.
+               Through the 1980s and 1990s, AIESEC in India expanded steadily across institutions,
+              building a reputation for developing high quality exchange experiences and developing functional leaders at the local and national level.
+              By the 200s, the entity had grown to X LC's and was consistently ranked among the top performing entities globally.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={3}>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 16 }}>
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-              consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+                The 2010's marked a period of significant growth, exchange volumes scaled to 4000+ a year, national governance was strengthed, 
+              and AIESEC in India began producing producing alumni who went on to lead business, civil, society and government. 
+              Today, we stand proud having delivered X+ exchanges, and developing leadership in Y+ young individuals, 
+              and even to this day across X cities, AIESEC in India continues to be a defining experience for thousands of young people each term.
+              driven by the same vision it was founded on; Peace and Fulfilment of humankind's potential
             </p>
           </ScrollReveal>
         </div>
@@ -176,8 +177,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
           <ScrollReveal>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', maxWidth: 820, marginTop: 36 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
+              India's strongest team comprised of 14 young leaders determined and to leave behind a Legacy for the Ages.
             </p>
           </ScrollReveal>
         </div>

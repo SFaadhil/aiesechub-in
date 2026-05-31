@@ -215,7 +215,7 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 - Sticky, frosted glass: `rgba(255,255,255,0.80)` + `backdrop-filter: blur(16px) saturate(180%)`
 - Dark: `rgba(10,15,30,0.85)`
 - Left: AIESEC walking-figure inline SVG + brand text ("AIESEC in India Hub" / "Term 26.27")
-- Right (`ms-auto`): Home · Functional Hub (dropdown) · The AIESEC Way · Global Academies · Conference Output · RnR · 🔍 · 🌙
+- Right (`ms-auto`): Home · Functional Hub (dropdown) · The AIESEC Way · Global Academies · Conference Output · RnR · 🔍 · 
 - Icon buttons: `34×34px`, `--radius-sm`, border `--border-strong`
 - Dropdown: `dropdown-menu-end`, `--radius-md`, `--shadow-lg`, `scaleIn` animation
 
