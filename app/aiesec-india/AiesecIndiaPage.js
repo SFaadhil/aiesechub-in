@@ -156,6 +156,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
                     <img
                       src={img ?? `https://placehold.co/180x240/e2e8f0/94a3b8?text=${encodeURIComponent(m.name.split(' ')[0])}`}
                       alt={m.name}
+                      onError={(e) => { e.currentTarget.src = `https://placehold.co/180x240/e2e8f0/94a3b8?text=${encodeURIComponent(m.name.split(' ')[0])}`; }}
                       style={{
                         width: '100%', aspectRatio: '3/4',
                         objectFit: 'cover', objectPosition: 'top',
