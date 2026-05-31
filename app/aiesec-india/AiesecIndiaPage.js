@@ -77,7 +77,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
           <ScrollReveal>
             <p style={{ fontSize: 17, lineHeight: 1.85, color: 'var(--text-2)' }}>
               AIESEC in India is one of the largest and the most impactful national entities of AIESEC;
-              The world's largest youth run organisation operating across 120+ countries. With over 23 Local Committees spanning universities all across India,
+              The world&apos;s largest youth run organisation operating across 120+ countries. With over 23 Local Committees spanning universities all across India,
               we form a network of 2500+ active young leaders united by a single purpose;
               developing leadership and enabiling cross cultural exchanges.
             </p>
@@ -118,16 +118,16 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 16 }}>
                Through the 1980s and 1990s, AIESEC in India expanded steadily across institutions,
               building a reputation for developing high quality exchange experiences and developing functional leaders at the local and national level.
-              By the 200s, the entity had grown to X LC's and was consistently ranked among the top performing entities globally.
+              By the 200s, the entity had grown to X LC&apos;s and was consistently ranked among the top performing entities globally.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={3}>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 16 }}>
-                The 2010's marked a period of significant growth, exchange volumes scaled to 4000+ a year, national governance was strengthed, 
+                The 2010&apos;s marked a period of significant growth, exchange volumes scaled to 4000+ a year, national governance was strengthed, 
               and AIESEC in India began producing producing alumni who went on to lead business, civil, society and government. 
               Today, we stand proud having delivered X+ exchanges, and developing leadership in Y+ young individuals, 
               and even to this day across X cities, AIESEC in India continues to be a defining experience for thousands of young people each term.
-              driven by the same vision it was founded on; Peace and Fulfilment of humankind's potential
+              driven by the same vision it was founded on; Peace and Fulfilment of humankind&apos;s potential
             </p>
           </ScrollReveal>
         </div>
@@ -178,7 +178,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
           <ScrollReveal>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', maxWidth: 820, marginTop: 36 }}>
-              India's strongest team comprised of 14 young leaders determined and to leave behind a Legacy for the Ages.
+              India&apos;s strongest team comprised of 14 young leaders determined and to leave behind a Legacy for the Ages.
             </p>
           </ScrollReveal>
         </div>
