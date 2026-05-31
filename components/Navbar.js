@@ -17,6 +17,8 @@ const NAV_LINKS_AFTER = [
   { href: '/rnr',               label: 'RnR' },
 ];
 
+/* ── Icons ─────────────────────────────────────────────────────────── */
+
 const SearchIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -32,6 +34,41 @@ const CloseIcon = () => (
     <line x1="6"  y1="6" x2="18" y2="18"/>
   </svg>
 );
+
+const ChevronIcon = ({ open }) => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+    style={{ transition: 'transform 220ms ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}>
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+
+const ArrowIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+    <polyline points="9 18 15 12 9 6"/>
+  </svg>
+);
+
+/* Animated hamburger → X */
+function HamburgerIcon({ open }) {
+  const bar = {
+    display: 'block', width: 22, height: 2,
+    borderRadius: 2, background: 'currentColor',
+    transition: 'transform 280ms ease, opacity 180ms ease',
+  };
+  return (
+    <span style={{ display: 'flex', flexDirection: 'column', gap: 5, width: 22, pointerEvents: 'none' }}>
+      <span style={{ ...bar, transformOrigin: 'center',
+        transform: open ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+      <span style={{ ...bar, opacity: open ? 0 : 1 }} />
+      <span style={{ ...bar, transformOrigin: 'center',
+        transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+    </span>
+  );
+}
+
+/* ── Desktop nav helpers ────────────────────────────────────────────── */
 
 function ActiveDot() {
   return (
@@ -57,8 +94,12 @@ function NavLink({ href, label, pathname }) {
   );
 }
 
+/* ── Main component ─────────────────────────────────────────────────── */
+
 export default function Navbar() {
   const pathname = usePathname();
+  const [menuOpen,      setMenuOpen]      = useState(false);
+  const [hubsOpen,      setHubsOpen]      = useState(false);
   const [searchOpen,    setSearchOpen]    = useState(false);
   const [query,         setQuery]         = useState('');
   const [scrolled,      setScrolled]      = useState(false);
@@ -86,29 +127,42 @@ export default function Navbar() {
     if (initialQuery) setQuery(initialQuery);
   }
 
+  /* Scroll shadow */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Global keyboard shortcuts */
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') { closeSearch(); return; }
+      if (e.key === 'Escape') {
+        if (searchOpen) { closeSearch(); return; }
+        if (menuOpen) { setMenuOpen(false); return; }
+      }
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [searchOpen, menuOpen]);
 
+  /* Custom event from search hints */
   useEffect(() => {
     const handler = (e) => openSearch(e.detail?.query || '');
     window.addEventListener('site:openSearch', handler);
     return () => window.removeEventListener('site:openSearch', handler);
   }, []);
 
-  useEffect(() => { setSearchOpen(false); setQuery(''); }, [pathname]);
+  /* Close everything on navigation */
+  useEffect(() => {
+    setSearchOpen(false);
+    setQuery('');
+    setMenuOpen(false);
+    setHubsOpen(false);
+  }, [pathname]);
 
+  /* Legacy: also hide Bootstrap collapse if it was ever triggered */
   useEffect(() => {
     const navEl = document.getElementById('mainNav');
     if (navEl && window.bootstrap) {
@@ -116,7 +170,13 @@ export default function Navbar() {
     }
   }, [pathname]);
 
-  // Load sheet data once on first open
+  /* Body scroll lock while mobile menu is open */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  /* Load sheet search data once */
   useEffect(() => {
     if (!searchOpen || sheetsLoaded) return;
     setSheetsLoaded(true);
@@ -125,8 +185,16 @@ export default function Navbar() {
     });
   }, [searchOpen, sheetsLoaded]);
 
+  /* ── All nav links for mobile (flat list) ── */
+  const allLinks = [
+    { href: '/', label: 'Home' },
+    ...NAV_LINKS_BEFORE,
+    ...NAV_LINKS_AFTER,
+  ];
+
   return (
     <>
+      {/* ══════════════════ STICKY NAV BAR ══════════════════ */}
       <nav
         className="navbar navbar-expand-lg site-navbar sticky-top"
         style={{
@@ -137,7 +205,7 @@ export default function Navbar() {
       >
         <div className="container-xl d-flex align-items-center justify-content-between w-100">
 
-          {/* ── Brand (left) ── */}
+          {/* Brand */}
           <Link href="/" className="navbar-brand d-flex align-items-center gap-2 flex-shrink-0"
             style={{ textDecoration: 'none' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -155,21 +223,27 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* ── Hamburger (mobile only) ── */}
+          {/* Hamburger — React-controlled, no Bootstrap data attrs */}
           <button
-            className="navbar-toggler border-0 p-2 d-lg-none"
+            className="d-lg-none border-0"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNav"
-            aria-controls="mainNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-            style={{ color: 'var(--text-2)' }}
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+            style={{
+              background: 'transparent', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 44, height: 44,
+              color: 'var(--text)',
+              borderRadius: 'var(--radius-sm)',
+              transition: 'background 150ms',
+              flexShrink: 0,
+            }}
           >
-            <span className="navbar-toggler-icon" />
+            <HamburgerIcon open={menuOpen} />
           </button>
 
-          {/* ── Nav links (right) ── */}
+          {/* Desktop nav — Bootstrap's CSS auto-shows this at lg+ */}
           <div className="collapse navbar-collapse" id="mainNav">
             <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-1 py-3 py-lg-0">
 
@@ -217,7 +291,7 @@ export default function Navbar() {
                 <NavLink key={link.href} href={link.href} label={link.label} pathname={pathname} />
               ))}
 
-              {/* Search icon */}
+              {/* Search */}
               <li className="nav-item ms-lg-2 d-flex align-items-center">
                 <button
                   className="nav-icon-btn"
@@ -234,7 +308,166 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ── Search overlay ── */}
+      {/* ══════════════════ MOBILE MENU OVERLAY ══════════════════ */}
+      <div
+        className={`mobile-nav-overlay d-lg-none${menuOpen ? ' open' : ''}`}
+        aria-hidden={!menuOpen}
+      >
+        {/* Tap-outside backdrop */}
+        <div
+          className="mobile-nav-backdrop"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close navigation"
+        />
+
+        {/* Slide-down panel */}
+        <div className="mobile-nav-panel" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+          {/* Blue accent stripe */}
+          <div style={{ height: 3, background: 'var(--primary)', flexShrink: 0 }} />
+
+          {/* Panel header */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '14px 20px',
+            borderBottom: '1px solid var(--border)',
+          }}>
+            <Link href="/" onClick={() => setMenuOpen(false)}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/aiesec-human-white.png" alt="AIESEC"
+                width={36} height={36} style={{ objectFit: 'contain' }} />
+              <div style={{ lineHeight: 1.25 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.2px' }}>
+                  AIESEC in India Hub
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.4px' }}>
+                  Term 26.27
+                </div>
+              </div>
+            </Link>
+
+            <button
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close navigation"
+              style={{
+                width: 40, height: 40, flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--bg-alt)', border: '1px solid var(--border)',
+                borderRadius: '50%', cursor: 'pointer', color: 'var(--text-2)',
+                transition: 'background 150ms',
+              }}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <nav>
+            {/* Home + links before hub */}
+            {[{ href: '/', label: 'Home' }, ...NAV_LINKS_BEFORE].map((link) => {
+              const active = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`mobile-nav-link${active ? ' active' : ''}`}
+                >
+                  <span>{link.label}</span>
+                  <ArrowIcon />
+                </Link>
+              );
+            })}
+
+            {/* Functional Hub accordion */}
+            <button
+              className={`mobile-nav-link${pathname.startsWith('/functional-hub') ? ' active' : ''}`}
+              onClick={() => setHubsOpen((v) => !v)}
+              aria-expanded={hubsOpen}
+            >
+              <span>Functional Hub</span>
+              <ChevronIcon open={hubsOpen} />
+            </button>
+
+            <div className={`mobile-nav-hub-children${hubsOpen ? ' open' : ''}`}>
+              <Link href="/functional-hub" onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'block', padding: '13px 24px 13px 48px',
+                  textDecoration: 'none', fontSize: 14, fontWeight: 700,
+                  color: 'var(--primary)',
+                  borderBottom: '1px solid var(--border)',
+                }}>
+                All Hubs →
+              </Link>
+              {HUBS.map((hub) => {
+                const active = pathname === `/functional-hub/${hub.slug}`;
+                return (
+                  <Link
+                    key={hub.slug}
+                    href={`/functional-hub/${hub.slug}`}
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '13px 24px 13px 48px',
+                      textDecoration: 'none', fontSize: 14,
+                      fontWeight: active ? 600 : 400,
+                      color: active ? 'var(--primary)' : 'var(--text-2)',
+                      borderBottom: '1px solid var(--border)',
+                    }}
+                  >
+                    {hub.name}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Links after hub */}
+            {NAV_LINKS_AFTER.map((link) => {
+              const active = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`mobile-nav-link${active ? ' active' : ''}`}
+                >
+                  <span>{link.label}</span>
+                  <ArrowIcon />
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Search bar */}
+          <div style={{ padding: '14px 20px', borderTop: '1px solid var(--border)' }}>
+            <button
+              onClick={() => { setMenuOpen(false); openSearch(); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                width: '100%', padding: '13px 16px',
+                background: 'var(--bg-alt)', border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)', cursor: 'pointer',
+                color: 'var(--text-3)', fontSize: 13.5,
+                transition: 'border-color 150ms',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; }}
+            >
+              <SearchIcon />
+              <span style={{ flex: 1, textAlign: 'left' }}>Search hubs, resources, pages…</span>
+              <kbd style={{
+                fontSize: 10, color: 'var(--text-3)', background: 'var(--surface)',
+                border: '1px solid var(--border)', borderRadius: 4, padding: '2px 6px',
+                flexShrink: 0,
+              }}>⌘K</kbd>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ══════════════════ SEARCH OVERLAY ══════════════════ */}
       <div
         className={`search-overlay${searchOpen ? ' open' : ''}`}
         onClick={(e) => { if (e.target === e.currentTarget) closeSearch(); }}
@@ -242,7 +475,6 @@ export default function Navbar() {
       >
         <div className="search-overlay-box">
 
-          {/* Header row */}
           <div className="d-flex align-items-center gap-3 mb-3">
             <div style={{ position: 'relative', flex: 1 }}>
               <span style={{
@@ -266,7 +498,6 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Empty state */}
           {!query && (
             <div>
               <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 10 }}>
@@ -293,7 +524,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Results */}
           {query.trim().length >= 2 && (
             <div style={{ maxHeight: 460, overflowY: 'auto', marginTop: 4 }}>
               {grouped.length === 0 ? (
