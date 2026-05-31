@@ -109,6 +109,13 @@ export default function Navbar() {
 
   useEffect(() => { setSearchOpen(false); setQuery(''); }, [pathname]);
 
+  useEffect(() => {
+    const navEl = document.getElementById('mainNav');
+    if (navEl && window.bootstrap) {
+      window.bootstrap.Collapse.getInstance(navEl)?.hide();
+    }
+  }, [pathname]);
+
   // Load sheet data once on first open
   useEffect(() => {
     if (!searchOpen || sheetsLoaded) return;
