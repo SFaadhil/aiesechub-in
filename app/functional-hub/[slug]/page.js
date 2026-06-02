@@ -22,25 +22,6 @@ const HUB_IMAGES = {
   expansions: 'https://picsum.photos/seed/expansions-hero/1200/500',
 };
 
-/* Arrow SVGs */
-function ChevronLeft() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden="true">
-      <polyline points="15 18 9 12 15 6"/>
-    </svg>
-  );
-}
-function ChevronRight() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden="true">
-      <polyline points="9 18 15 12 9 6"/>
-    </svg>
-  );
-}
 function InfoIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -67,10 +48,6 @@ export default async function SubHubPage({ params }) {
   if (!isHubLive(params.slug)) notFound();
   const hub = getHub(params.slug);
   if (!hub) notFound();
-
-  const hubIndex = HUBS.findIndex((h) => h.slug === hub.slug);
-  const prevHub  = HUBS[hubIndex - 1] ?? null;
-  const nextHub  = HUBS[hubIndex + 1] ?? null;
 
   // Live data from Google Sheets; falls back to data.js if sheet not configured
   const sheetResources = await fetchHubResources(params.slug);
@@ -209,72 +186,14 @@ export default async function SubHubPage({ params }) {
         </div>
       </section>
 
-      {/* ── Hub pagination ── */}
+      {/* ── Back to all hubs ── */}
       <section className="section-pb">
         <div className="container-xl">
           <hr className="divider mb-5" />
-          <div className="d-flex align-items-center justify-content-between gap-3">
-            {prevHub ? (
-              <Link
-                href={`/functional-hub/${prevHub.slug}`}
-                className="d-flex align-items-center gap-3 text-decoration-none"
-                style={{ color: 'var(--text)' }}
-              >
-                <div style={{
-                  width: 38, height: 38, borderRadius: 10,
-                  border: '1px solid var(--border)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-2)',
-                  transition: 'border-color var(--transition-fast), background var(--transition-fast)',
-                }}>
-                  <ChevronLeft />
-                </div>
-                <div>
-                  <div style={{
-                    fontSize: 10.5, color: 'var(--text-3)',
-                    textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600,
-                  }}>
-                    Previous
-                  </div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>
-                    {prevHub.name}
-                  </div>
-                </div>
-              </Link>
-            ) : <div />}
-
+          <div className="d-flex justify-content-center">
             <Link href="/functional-hub" className="btn-outline-brand">
-              All Hubs
+              ← All Hubs
             </Link>
-
-            {nextHub ? (
-              <Link
-                href={`/functional-hub/${nextHub.slug}`}
-                className="d-flex align-items-center gap-3 text-decoration-none text-end"
-                style={{ color: 'var(--text)' }}
-              >
-                <div>
-                  <div style={{
-                    fontSize: 10.5, color: 'var(--text-3)',
-                    textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600,
-                  }}>
-                    Next
-                  </div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>
-                    {nextHub.name}
-                  </div>
-                </div>
-                <div style={{
-                  width: 38, height: 38, borderRadius: 10,
-                  border: '1px solid var(--border)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-2)',
-                  transition: 'border-color var(--transition-fast), background var(--transition-fast)',
-                }}>
-                  <ChevronRight />
-                </div>
-              </Link>
-            ) : <div />}
           </div>
         </div>
       </section>

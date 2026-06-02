@@ -41,28 +41,34 @@ function ReviewIcon({ color }) {
 
 const CONF_TYPES = [
   {
-    name: 'National Congress (NC)',
-    desc: 'Annual flagship conference for strategic direction setting and national governance.',
+    name: 'JNC (June National Conference)',
+    desc: 'The conference where one chapter closes and another begins. JNC marks the discharge of the outgoing MC and the ratification of the incoming MC, making it one of the most emotional moments in the AIESEC in India calendar. Over five days, members come together to network, exchange ideas, create plans for the future, and make memories that last a lifetime. It also serves as an important checkpoint for Local Committees, taking place right at the halfway mark of the term.',
     Icon: NationalIcon,
     color: '#f59e0b',
   },
   {
-    name: 'NLDS',
-    desc: 'National Leadership Development Seminar — intensive training for emerging LC leaders.',
+    name: 'RYLC / NYLC (Regional / National Youth Leadership Conference)',
+    desc: 'The induction conference for incoming members during the winter cycle. For many, this is their first experience of the larger AIESEC network beyond their Local Committee. It is also a space where Vice Presidents and Local Committee Presidents step into facilitation roles, leading sessions and delivering spaces in the National Plenary while inspiring the next generation of leaders.',
     Icon: CapIcon,
-    color: '#f85a40',
-  },
-  {
-    name: 'Mid-Year Conference (MYC)',
-    desc: 'Mid-term review to assess progress, recalibrate strategy, and share best practices.',
-    Icon: ReviewIcon,
     color: '#037ef3',
   },
   {
-    name: 'Regional Conferences',
-    desc: 'Zone-level conferences for regional networking and localised strategy.',
-    Icon: GlobeIcon,
+    name: 'NPC (National Presidents Conference)',
+    desc: 'Held after every Local Committee completes its Annual Elections Meeting, NPC brings together current and incoming Local Committee Presidents from across the country. It is a conference that symbolizes continuity and leadership transition, where outgoing LCPs proudly walk alongside their successors and prepare them for the journey ahead.',
+    Icon: ReviewIcon,
     color: '#0CB9C1',
+  },
+  {
+    name: 'NLS (National Leadership Summit)',
+    desc: 'The conference where the future leadership of AIESEC in India takes shape. NLS is where MCP elections take place, determining who will lead the organization at the national level. Alongside this, it serves as a checkpoint for the outgoing Executive Boards while offering a warm welcome and orientation to the incoming Executive Boards of Local Committees across the country.',
+    Icon: NationalIcon,
+    color: '#7552CC',
+  },
+  {
+    name: 'XLDS (Exchanges Leadership Development Summit)',
+    desc: 'Formerly known as NLDS and MNC, XLDS brings together the best of both conferences into a single experience. While one conference focused on induction and leadership development, the other centered around innovation and problem-solving through a hackathon format. Today, XLDS carries forward both legacies, creating a space where entities collaborate, compete, and challenge themselves to emerge as the hackathon champions while growing as exchange leaders.',
+    Icon: GlobeIcon,
+    color: '#f85a40',
   },
 ];
 
@@ -101,29 +107,28 @@ export default async function ConferenceOutputPage() {
                     className="conf-card"
                     style={{ borderLeft: `3px solid ${conf.color}` }}
                   >
-                    <div
-                      className="conf-icon"
-                      style={{
-                        background: `${conf.color}18`,
-                        color: conf.color,
-                      }}
-                    >
-                      <conf.Icon color={conf.color} />
-                    </div>
-                    <div>
+                    {/* Icon + title on the same row */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div
+                        className="conf-icon"
+                        style={{ background: `${conf.color}18`, color: conf.color, flexShrink: 0 }}
+                      >
+                        <conf.Icon color={conf.color} />
+                      </div>
                       <h3 style={{
                         fontSize: 15, fontWeight: 700,
-                        marginBottom: 6, color: 'var(--text)',
+                        margin: 0, color: 'var(--text)', lineHeight: 1.3,
                       }}>
                         {conf.name}
                       </h3>
-                      <p style={{
-                        fontSize: 13.5, color: 'var(--text-2)',
-                        margin: 0, lineHeight: 1.6,
-                      }}>
-                        {conf.desc}
-                      </p>
                     </div>
+                    {/* Description starts below, full width */}
+                    <p style={{
+                      fontSize: 13.5, color: 'var(--text-2)',
+                      margin: 0, lineHeight: 1.6,
+                    }}>
+                      {conf.desc}
+                    </p>
                   </div>
                 </ScrollReveal>
               </div>
@@ -132,51 +137,6 @@ export default async function ConferenceOutputPage() {
         </div>
       </section>
 
-      {page.sections.map((section, i) => (
-        <section
-          key={section.heading}
-          className="section-py"
-          style={{
-            background: i % 2 === 0 ? 'var(--bg-alt)' : 'var(--bg)',
-            borderTop: '1px solid var(--border)',
-          }}
-        >
-          <div className="container-xl">
-            <div className="row g-5 align-items-center">
-              {section.image && (
-                <div className="col-12 col-lg-5">
-                  <ScrollReveal direction="left">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={section.image}
-                      alt={section.heading}
-                      className="content-img"
-                    />
-                  </ScrollReveal>
-                </div>
-              )}
-              <div className={`col-12 ${section.image ? 'col-lg-7' : 'col-lg-8'}`}>
-                <ScrollReveal direction={section.image ? 'right' : 'up'}>
-                  <div className="accent-line" style={{
-                    background: page.accent,
-                    backgroundImage: 'none',
-                  }} />
-                  <h2 style={{
-                    fontSize: 'clamp(1.4rem, 3vw, 1.9rem)',
-                    fontWeight: 800, color: page.accent, marginBottom: 16,
-                  }}>
-                    {section.heading}
-                  </h2>
-                  <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--text-2)' }}>
-                    {section.body}
-                  </p>
-                </ScrollReveal>
-              </div>
-            </div>
-          </div>
-        </section>
-      ))}
-
       {/* ── Resource cards ── */}
       <section
         className="section-py"
@@ -184,8 +144,8 @@ export default async function ConferenceOutputPage() {
       >
         <div className="container-xl">
           <ScrollReveal className="mb-5">
-            <p className="section-eyebrow">Materials</p>
-            <h2 className="section-title mb-2">Conference Materials</h2>
+            <p className="section-eyebrow">Outputs</p>
+            <h2 className="section-title mb-2">Conference Outputs</h2>
             <p className="section-body">
               Outputs and materials from past and upcoming conferences.
             </p>

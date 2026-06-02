@@ -452,7 +452,7 @@ a { color: inherit; }
   text-decoration: none;
   color: var(--text);
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-  height: 100%;
+  height: 370px; /* fixed — forces all 5 cards identical regardless of row */
 }
 
 .feature-card:hover {
@@ -496,6 +496,10 @@ a { color: inherit; }
   line-height: 1.6;
   flex: 1;
   margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .feature-card-cta {
@@ -564,6 +568,10 @@ a { color: inherit; }
 
 .hub-card-body {
   padding: 14px 16px 16px;
+  min-height: 78px; /* locks body height for 2-line subtitle across all cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .hub-card-name {
@@ -571,11 +579,19 @@ a { color: inherit; }
   font-weight: 700;
   letter-spacing: -0.2px;
   margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hub-card-sub {
   font-size: 12px;
   color: var(--text-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
 }
 
 /* ── A2030 external card ─────────────────────────── */
@@ -1301,10 +1317,13 @@ a { color: inherit; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 20px 22px;
+  padding: 18px 20px;
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  height: 100%;
+  min-height: 243px;
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .conf-card:hover {

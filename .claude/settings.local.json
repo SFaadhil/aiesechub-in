@@ -44,7 +44,14 @@
       "Bash(python3 -c ' *)",
       "PowerShell(Rename-Item \"C:\\\\Users\\\\faadh\\\\OneDrive\\\\Desktop\\\\IXP DSP\\\\aiesechub.in\\\\public\\\\images\\\\mcvp\\\\Rithwik Rajenda - oGV.jpeg\" \"Rithwik Rajendra - oGV.jpeg\")",
       "Bash(python \".claude/skills/ui-ux-pro-max/scripts/search.py\" \"mobile navigation overlay slide-in panel youth organization professional\" --design-system -p \"AIESEC Mobile Nav\")",
-      "Bash(python \".claude/skills/ui-ux-pro-max/scripts/search.py\" \"mobile menu overlay animation slide\" --domain ux -n 5)"
+      "Bash(python \".claude/skills/ui-ux-pro-max/scripts/search.py\" \"mobile menu overlay animation slide\" --domain ux -n 5)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(findstr LISTENING)",
+      "Bash(taskkill /PID 16880 /F)",
+      "PowerShell(Stop-Process -Id 16880 -Force)",
+      "PowerShell($proc = Get-NetTCPConnection -LocalPort 3000 -State Listen | Select-Object -ExpandProperty OwningProcess; Stop-Process -Id $proc -Force -ErrorAction SilentlyContinue; Write-Output \"Killed PID $proc\")"
     ]
   }
 }

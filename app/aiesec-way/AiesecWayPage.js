@@ -506,6 +506,9 @@ export default function AiesecWayPage() {
                     borderRadius: 12,
                     padding: '18px 16px',
                     height: '100%',
+                    minHeight: 200,
+                    display: 'flex',
+                    flexDirection: 'column',
                     transition: 'transform var(--transition), box-shadow var(--transition)',
                   }}>
                     <h3 style={{
@@ -517,10 +520,15 @@ export default function AiesecWayPage() {
                     <p style={{
                       fontSize: 13, color: 'var(--text-2)',
                       lineHeight: 1.6, margin: '0 0 8px',
+                      flex: 1,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 5,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
                     }}>
                       {v.desc}
                     </p>
-                    <div style={{ fontSize: 11.5, color: v.hexColor, fontWeight: 600 }}>
+                    <div style={{ fontSize: 11.5, color: v.hexColor, fontWeight: 600, flexShrink: 0 }}>
                       {v.elements.map((el) => (
                         <div key={el}>· {el}</div>
                       ))}

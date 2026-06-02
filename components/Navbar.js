@@ -14,7 +14,7 @@ const NAV_LINKS_BEFORE = [
 
 const NAV_LINKS_AFTER = [
   { href: '/conference-output', label: 'Conference Output' },
-  { href: '/rnr',               label: 'RnR' },
+  { href: '/rnr',               label: 'MVP' },
 ];
 
 /* ── Icons ─────────────────────────────────────────────────────────── */
