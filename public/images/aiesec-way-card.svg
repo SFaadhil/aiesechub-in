@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="#EDF2F8"/>
+
+  <!-- Concentric wave bands centred at top-right corner (800, 0).
+       All bands share the same sky-blue base (#4FBDE0).
+       Opacity decreases outward → inner ring is darkest, outer is lightest.
+       Draw largest first so each bg circle resets the canvas cleanly. -->
+
+  <!-- Band 7 — outermost, most transparent -->
+  <circle cx="800" cy="0" r="472" fill="#4FBDE0" fill-opacity="0.14"/>
+  <circle cx="800" cy="0" r="432" fill="#EDF2F8"/>
+  <!-- Band 6 -->
+  <circle cx="800" cy="0" r="408" fill="#4FBDE0" fill-opacity="0.20"/>
+  <circle cx="800" cy="0" r="368" fill="#EDF2F8"/>
+  <!-- Band 5 -->
+  <circle cx="800" cy="0" r="344" fill="#4FBDE0" fill-opacity="0.27"/>
+  <circle cx="800" cy="0" r="304" fill="#EDF2F8"/>
+  <!-- Band 4 -->
+  <circle cx="800" cy="0" r="280" fill="#4FBDE0" fill-opacity="0.34"/>
+  <circle cx="800" cy="0" r="240" fill="#EDF2F8"/>
+  <!-- Band 3 -->
+  <circle cx="800" cy="0" r="216" fill="#4FBDE0" fill-opacity="0.41"/>
+  <circle cx="800" cy="0" r="176" fill="#EDF2F8"/>
+  <!-- Band 2 -->
+  <circle cx="800" cy="0" r="152" fill="#4FBDE0" fill-opacity="0.48"/>
+  <circle cx="800" cy="0" r="112" fill="#EDF2F8"/>
+  <!-- Band 1 — innermost, most opaque -->
+  <circle cx="800" cy="0" r="88"  fill="#4FBDE0" fill-opacity="0.55"/>
+  <circle cx="800" cy="0" r="48"  fill="#EDF2F8"/>
+
+  <!-- Text — rendered on top -->
+  <text
+    x="58" y="66"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="11.5" font-weight="700"
+    fill="#037ef3" letter-spacing="2.8"
+  >FRAMEWORK</text>
+
+  <text
+    x="50" y="154"
+    font-family="'Arial Black', Arial, Helvetica, sans-serif"
+    font-size="90" font-weight="900"
+    fill="#0f172a"
+  >THE</text>
+
+  <text
+    x="50" y="252"
+    font-family="'Arial Black', Arial, Helvetica, sans-serif"
+    font-size="90" font-weight="900"
+    fill="#037ef3"
+  >AIESEC</text>
+
+  <text
+    x="50" y="350"
+    font-family="'Arial Black', Arial, Helvetica, sans-serif"
+    font-size="90" font-weight="900"
+    fill="#0f172a"
+  >WAY</text>
+
+</svg>

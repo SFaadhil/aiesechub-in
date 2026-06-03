@@ -28,14 +28,14 @@ const FEATURED = [
     title: 'AIESEC in India',
     desc: 'Our history, Member Committee, Board of Advisors, and governing Compendium.',
     color: '#037ef3',
-    img: 'https://picsum.photos/seed/aiesec-india-hero/800/400',
+    img: '/images/placeholder-cards/aiesec-in-india.jpeg',
   },
   {
     href: '/aiesec-way',
     title: 'The AIESEC Way',
     desc: 'Explore the vision, mission, and values that guide every AIESEC member worldwide.',
     color: '#0CB9C1',
-    img: 'https://picsum.photos/seed/feat-way/800/400',
+    img: '/images/aiesec-way-card.svg',
   },
   {
     href: '/functional-hub',
@@ -56,7 +56,7 @@ const FEATURED = [
     title: 'Rewards & Recognition',
     desc: 'National leaderboard and recognition for top-performing LCs.',
     color: '#f59e0b',
-    img: 'https://picsum.photos/seed/feat-rnr/800/400',
+    img: '/images/placeholder-cards/RnR.png',
   },
 ];
 

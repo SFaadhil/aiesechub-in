@@ -26,7 +26,7 @@ const GROUPS = [
   },
   {
     id: 'support',
-    label: 'Support Portfolios',
+    label: 'Support Functions',
     sub: 'IM · OD · Expansions',
     slugs: ['im', 'od', 'expansions'],
   },
@@ -39,7 +39,7 @@ const COLOR_LEGEND = [
   { label: 'BD',            color: '#f59e0b' },
   { label: 'PM',            color: '#7552CC' },
   { label: 'FnL',           color: '#00c16e' },
-  { label: 'IM / OD',       color: '#8b9ab0' },
+  { label: 'OD',       color: '#8b9ab0' },
 ];
 
 export default function FunctionalHubPage() {

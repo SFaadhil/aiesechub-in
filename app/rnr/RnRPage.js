@@ -52,13 +52,13 @@ function HeroSection() {
       background: 'linear-gradient(135deg, #1a0a00 0%, #2d1200 40%, #1a0a00 100%)',
       position: 'relative',
       overflow: 'hidden',
-      padding: '80px 0 64px',
+      padding: '36px 0 40px',
     }}>
       <div style={{ position:'absolute', top:-60, right:-60, width:400, height:400, borderRadius:'50%', background:'rgba(245,158,11,0.15)', filter:'blur(80px)', pointerEvents:'none' }} />
       <div style={{ position:'absolute', bottom:-80, left:-40, width:320, height:320, borderRadius:'50%', background:'rgba(245,158,11,0.08)', filter:'blur(60px)', pointerEvents:'none' }} />
 
       <div className="container-xl position-relative" style={{ zIndex: 1 }}>
-        <div className="row align-items-center g-5">
+        <div className="row align-items-start g-4">
           <div className="col-12 col-lg-7 animate-fade-up">
             <div style={{
               display:'inline-flex', alignItems:'center', gap:8,
@@ -105,36 +105,56 @@ function HeroSection() {
           </div>
 
           <div className="col-12 col-lg-5 animate-fade-up delay-2">
-            <div style={{
-              background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.2)',
-              borderRadius:16, padding:'28px 24px', marginBottom:16,
-            }}>
-              <p style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'1px', color:'rgba(255,255,255,0.4)', marginBottom:16 }}>
-                For Queries
-              </p>
-              {[
-                { label:'Name',  value:'Mohammed Zahid Ahmed' },
-                { label:'Role',  value:'MCVP Expansions & ODm' },
-                { label:'Phone', value:'+91 6366304513' },
-                { label:'Email', value:'zahid.ahmed@aiesec.in' },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ display:'flex', gap:12, alignItems:'baseline', marginBottom:8 }}>
-                  <span style={{ fontSize:11, color:ACCENT, fontWeight:700, minWidth:44 }}>{label}</span>
-                  <span style={{ fontSize:13.5, color:'rgba(255,255,255,0.75)' }}>{value}</span>
-                </div>
-              ))}
-            </div>
+            <div style={{ paddingTop: 49 }}>
 
-            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
-              {Object.entries(TIER_META).map(([tier, { color }]) => (
-                <span key={tier} style={{
-                  fontSize:11, fontWeight:700, color,
-                  background:'rgba(255,255,255,0.06)', border:`1px solid ${color}40`,
-                  borderRadius:20, padding:'3px 10px',
-                }}>
-                  {tier}
-                </span>
-              ))}
+              {/* Logo: height=196px centres its midpoint on the midpoint of title+description.
+                  marginBottom=32 matches the description's bottom margin so the contact card
+                  starts at exactly the same y-level as the "Points to Note" card. */}
+              <div style={{
+                height: 196,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                marginBottom: 32,
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/MVP logo.PNG"
+                  alt="MVP Logo"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                />
+              </div>
+
+              <div style={{
+                background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.2)',
+                borderRadius:16, padding:'20px 24px', marginBottom:12,
+              }}>
+                <p style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'1px', color:'rgba(255,255,255,0.4)', marginBottom:16 }}>
+                  For Queries
+                </p>
+                {[
+                  { label:'Name',  value:'Mohammed Zahid Ahmed' },
+                  { label:'Role',  value:'MCVP Expansions & ODm' },
+                  { label:'Phone', value:'+91 6366304513' },
+                  { label:'Email', value:'zahid.ahmed@aiesec.in' },
+                ].map(({ label, value }) => (
+                  <div key={label} style={{ display:'flex', gap:12, alignItems:'baseline', marginBottom:8 }}>
+                    <span style={{ fontSize:11, color:ACCENT, fontWeight:700, minWidth:44 }}>{label}</span>
+                    <span style={{ fontSize:13.5, color:'rgba(255,255,255,0.75)' }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                {Object.entries(TIER_META).map(([tier, { color }]) => (
+                  <span key={tier} style={{
+                    fontSize:11, fontWeight:700, color,
+                    background:'rgba(255,255,255,0.06)', border:`1px solid ${color}40`,
+                    borderRadius:20, padding:'3px 10px',
+                  }}>
+                    {tier}
+                  </span>
+                ))}
+              </div>
+
             </div>
           </div>
         </div>

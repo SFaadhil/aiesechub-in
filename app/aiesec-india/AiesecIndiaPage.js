@@ -31,9 +31,9 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
       <section style={{ position: 'relative', overflow: 'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://picsum.photos/seed/aiesec-india-hero/1600/700"
+          src="/images/placeholder-cards/aiesec-in-india.jpeg"
           alt="AIESEC in India"
-          style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block' }}
+          style={{ width: '100%', height: 480, objectFit: 'cover', objectPosition: 'center', display: 'block' }}
         />
         <div style={{
           position: 'absolute', inset: 0,
@@ -146,7 +146,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
             </p>
           </ScrollReveal>
 
-          <div className="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-7 g-4">
+          <div className="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-4">
             {MC.map((m, i) => {
               const img = mcImg(m);
               return (
@@ -254,10 +254,10 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
             </p>
           </ScrollReveal>
 
-          <div className="row g-4">
+          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-4">
             {ADVISORS.map((a, i) => (
-              <div key={i} className="col-6 col-sm-4 col-md-3 col-lg-2">
-                <ScrollReveal delay={Math.min((i % 6) + 1, 6)}>
+              <div key={i} className="col" style={{ display: 'flex' }}>
+                <ScrollReveal delay={Math.min((i % 6) + 1, 6)} className="h-100 w-100">
                   <div style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
@@ -265,6 +265,9 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
                     overflow: 'hidden',
                     textAlign: 'center',
                     transition: 'transform var(--transition), box-shadow var(--transition)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -272,10 +275,11 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
                       alt={a.name}
                       style={{
                         width: '100%', aspectRatio: '3/4',
-                        objectFit: 'cover', display: 'block',
+                        objectFit: 'cover', objectPosition: 'top', display: 'block',
+                        flexShrink: 0,
                       }}
                     />
-                    <div style={{ padding: '14px 12px' }}>
+                    <div style={{ padding: '14px 12px', flex: 1 }}>
                       <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', margin: 0 }}>
                         {a.name}
                       </p>

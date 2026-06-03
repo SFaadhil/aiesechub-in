@@ -779,7 +779,7 @@ export default function AiesecWayPage() {
                   <div className="feature-card" style={{ height: '100%' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src="https://placehold.co/600x280/e8f3fe/037ef3?text=AIESEC+Way+PDF"
+                      src="/images/aiesec-way-card.svg"
                       alt="AIESEC Way PDF"
                       className="feature-card-img"
                     />
@@ -811,7 +811,7 @@ export default function AiesecWayPage() {
                   <div className="feature-card" style={{ height: '100%' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src="https://placehold.co/600x280/0f172a/037ef3?text=AIESEC+2030"
+                      src="/images/placeholder-cards/A2030.png"
                       alt="AIESEC 2030"
                       className="feature-card-img"
                     />

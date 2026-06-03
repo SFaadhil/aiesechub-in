@@ -1,17 +1,16 @@
 import Link from 'next/link';
 
 const IMAGES = {
-  igv:        'https://picsum.photos/seed/igv-world/600/300',
-  ogv:        'https://picsum.photos/seed/ogv-travel/600/300',
-  igtae:      'https://picsum.photos/seed/igtae-pro/600/300',
-  ogtae:      'https://picsum.photos/seed/ogtae-city/600/300',
-  mkt:        'https://picsum.photos/seed/mkt-creative/600/300',
-  bd:         'https://picsum.photos/seed/bd-business/600/300',
-  pm:         'https://picsum.photos/seed/pm-team/600/300',
-  fnl:        'https://picsum.photos/seed/fnl-finance/600/300',
-  im:         'https://picsum.photos/seed/im-data/600/300',
+  igv:        '/images/placeholder-cards/igv.jpeg',
+  ogv:        '/images/placeholder-cards/ogv.jpeg',
+  igtae:      '/images/placeholder-cards/igt.png',
+  ogtae:      '/images/placeholder-cards/ogta.jpeg',
+  mkt:        '/images/placeholder-cards/mkt.png',
+  bd:         '/images/placeholder-cards/BD.jpeg',
+  pm:         '/images/placeholder-cards/pm.png',
+  fnl:        '/images/placeholder-cards/fnl.png',
   od:         'https://picsum.photos/seed/od-org/600/300',
-  expansions: 'https://picsum.photos/seed/expansions-hub/600/300',
+  expansions: '/images/placeholder-cards/exp.png',
 };
 
 export default function HubCard({ slug, name, fullName, accent }) {
