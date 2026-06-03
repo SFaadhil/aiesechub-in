@@ -155,6 +155,9 @@ a { color: inherit; }
 
 .blob-bg > * { position: relative; z-index: 1; }
 
+/* ── Scroll-to-section offset (accounts for sticky navbar height) ──── */
+section[id] { scroll-margin-top: 76px; }
+
 /* ── Navbar ─────────────────────────────────────── */
 .site-navbar {
   background-color: rgba(255,255,255,0.80) !important;

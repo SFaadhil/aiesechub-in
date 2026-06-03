@@ -94,6 +94,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
       {/* ── Our History ──────────────────────────────────────────────────── */}
       <section
+        id="history"
         className="section-py"
         style={{
           background: 'var(--surface)',
@@ -134,7 +135,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
       </section>
 
       {/* ── Our MC ───────────────────────────────────────────────────────── */}
-      <section style={{ paddingBlock: 56 }}>
+      <section id="mc" style={{ paddingBlock: 56 }}>
         <div className="ai-inset">
           <ScrollReveal>
             <div className="accent-line" />
@@ -186,6 +187,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
       {/* ── MC Contact List ───────────────────────────────────────────────── */}
       <section
+        id="mc-contact"
         className="section-py"
         style={{
           background: 'var(--surface)',
@@ -242,7 +244,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
       </section>
 
       {/* ── Board of Advisors ─────────────────────────────────────────────── */}
-      <section className="section-py">
+      <section id="advisors" className="section-py">
         <div className="ai-inset">
           <ScrollReveal>
             <div className="accent-line" />
@@ -297,6 +299,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
       {/* ── Compendium ────────────────────────────────────────────────────── */}
       <section
+        id="compendium"
         className="section-py"
         style={{
           background: 'var(--surface)',

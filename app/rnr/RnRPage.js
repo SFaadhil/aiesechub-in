@@ -191,7 +191,7 @@ function DashboardSection() {
   const visiblePortfolios = PORTFOLIOS.filter((p) => visiblePf.has(p.key));
 
   return (
-    <section className="section-py" style={{ background:'var(--bg)' }}>
+    <section id="dashboard" className="section-py" style={{ background:'var(--bg)' }}>
       <div className="container-xl">
         <SectionHeader
           eyebrow="Rankings"
@@ -391,7 +391,7 @@ function RecognitionSection() {
   }, [selectedPortfolio, selectedMonth]);
 
   return (
-    <section className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
+    <section id="recognition" className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
       <div className="container-xl">
         <SectionHeader
           eyebrow="Monthly Recognition"
@@ -477,7 +477,7 @@ function TiersSection() {
   const portfolio = TIER_PORTFOLIOS.find((p) => p.key === activeKey) || TIER_PORTFOLIOS[0];
 
   return (
-    <section className="section-py">
+    <section id="tiers" className="section-py">
       <div className="container-xl">
         <SectionHeader
           eyebrow="Tier Structure"
@@ -569,7 +569,7 @@ function MetricsSection() {
   const currentMetric = RNR_METRICS[activeKey];
 
   return (
-    <section className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)' }}>
+    <section id="metrics" className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)' }}>
       <div className="container-xl">
         <SectionHeader
           eyebrow="Points Framework"
