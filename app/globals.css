@@ -701,6 +701,13 @@ section[id] { scroll-margin-top: 76px; }
 .badge-link   { background: var(--primary-light); color: var(--primary-dark); }
 .badge-other  { background: #f1f5f9; color: #475569; }
 
+/* ── Conference type badges ─────────────────────────────────────────── */
+.badge-nls    { background: #f5f3ff; color: #7552CC; }
+.badge-jnc    { background: #fffbeb; color: #b45309; }
+.badge-nylc   { background: #eff6ff; color: #1d4ed8; }
+.badge-npc    { background: #ecfeff; color: #0e7490; }
+.badge-xlds   { background: #fff5f0; color: #c2410c; }
+
 /* ── Page Hero ──────────────────────────────────── */
 .page-hero {
   position: relative;

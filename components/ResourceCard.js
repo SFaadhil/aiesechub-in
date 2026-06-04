@@ -94,6 +94,12 @@ const TYPE_CONFIG = {
   pdf:    { cls: 'badge-pdf',    label: 'PDF',    Icon: PdfIcon,    iconBg: '#fce4ec', iconColor: '#c62828' },
   link:   { cls: 'badge-link',   label: 'Link',   Icon: LinkIcon,   iconBg: 'var(--primary-light)', iconColor: 'var(--primary-dark)' },
   other:  { cls: 'badge-other',  label: 'Other',  Icon: OtherIcon,  iconBg: '#f1f5f9', iconColor: '#475569' },
+  // Conference output types
+  nls:    { cls: 'badge-nls',    label: 'NLS',    Icon: SlidesIcon, iconBg: '#f5f3ff', iconColor: '#7552CC' },
+  jnc:    { cls: 'badge-jnc',    label: 'JNC',    Icon: SlidesIcon, iconBg: '#fffbeb', iconColor: '#b45309' },
+  nylc:   { cls: 'badge-nylc',   label: 'NYLC',   Icon: SlidesIcon, iconBg: '#eff6ff', iconColor: '#1d4ed8' },
+  npc:    { cls: 'badge-npc',    label: 'NPC',    Icon: SlidesIcon, iconBg: '#ecfeff', iconColor: '#0e7490' },
+  xlds:   { cls: 'badge-xlds',   label: 'XLDS',   Icon: SlidesIcon, iconBg: '#fff5f0', iconColor: '#c2410c' },
 };
 
 export default function ResourceCard({ title, description, type, linkUrl = '#', accent }) {

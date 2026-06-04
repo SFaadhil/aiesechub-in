@@ -72,11 +72,39 @@ const CONF_TYPES = [
   },
 ];
 
+// Conference type metadata — order controls display order
+const CONF_GROUPS = [
+  { key: 'nls',  label: 'NLS',  fullName: 'National Leadership Summit',              color: '#7552CC' },
+  { key: 'jnc',  label: 'JNC',  fullName: 'June National Conference',                color: '#f59e0b' },
+  { key: 'nylc', label: 'NYLC', fullName: 'National Youth Leadership Conference (Also known as RYLC/RYLC Prime)',    color: '#037ef3' },
+  { key: 'npc',  label: 'NPC',  fullName: 'National Presidents Conference',          color: '#0CB9C1' },
+  { key: 'xlds', label: 'XLDS', fullName: 'Exchanges Leadership Development Summit (Previously known as NLDS & MNC)', color: '#f85a40' },
+];
+
+function groupResourcesByType(resources) {
+  const confKeys = new Set(CONF_GROUPS.map((g) => g.key));
+  const map = {};
+  const others = [];
+  resources.forEach((r) => {
+    const t = (r.type || '').toLowerCase().trim();
+    if (confKeys.has(t)) {
+      if (!map[t]) map[t] = [];
+      map[t].push(r);
+    } else {
+      others.push(r);
+    }
+  });
+  return { map, others };
+}
+
 export default async function ConferenceOutputPage() {
   if (!PAGE_STATUS_LIVE) return <PageOffline />;
   const page = STATIC_PAGES['conference-output'];
   const sheetResources = await fetchPageResources('conference-output');
-  const resources = sheetResources ?? page.resources;
+  // Only use fallback placeholder data if the sheet returned nothing at all
+  const resources = sheetResources ?? [];
+  const { map: confMap, others } = groupResourcesByType(resources);
+  const hasAnyResources = resources.length > 0;
 
   return (
     <>
@@ -137,7 +165,7 @@ export default async function ConferenceOutputPage() {
         </div>
       </section>
 
-      {/* ── Resource cards ── */}
+      {/* ── Resource cards (grouped by conference type) ── */}
       <section
         className="section-py"
         style={{ borderTop: '1px solid var(--border)' }}
@@ -147,25 +175,126 @@ export default async function ConferenceOutputPage() {
             <p className="section-eyebrow">Outputs</p>
             <h2 className="section-title mb-2">Conference Outputs</h2>
             <p className="section-body">
-              Outputs and materials from past and upcoming conferences.
+              Materials and resources from AIESEC India conferences
             </p>
           </ScrollReveal>
 
-          <div className="row g-3">
-            {resources.map((r, i) => (
-              <div key={r.title} className="col-12 col-sm-6 col-md-4">
-                <ScrollReveal delay={Math.min((i % 5) + 1, 6)}>
-                  <ResourceCard
-                    title={r.title}
-                    description={r.description ?? r.desc}
-                    type={r.type}
-                    linkUrl={r.url || '#'}
-                    accent={page.accent}
-                  />
-                </ScrollReveal>
+          {!hasAnyResources && (
+            <ScrollReveal>
+              <div style={{
+                textAlign: 'center', padding: '48px 24px',
+                border: '1.5px dashed var(--border)',
+                borderRadius: 16, color: 'var(--text-3)',
+              }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>📋</div>
+                <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-2)', margin: '0 0 6px' }}>
+                  No outputs added yet
+                </p>
+                <p style={{ fontSize: 13, margin: 0 }}>
+                  Add rows to the <strong>conference-output</strong> tab in the Google Sheet — they will
+                  appear here within 60 seconds.
+                </p>
               </div>
-            ))}
-          </div>
+            </ScrollReveal>
+          )}
+
+          {/* One group per conference type (only rendered if it has entries) */}
+          {CONF_GROUPS.map((group) => {
+            const items = confMap[group.key];
+            if (!items || items.length === 0) return null;
+            return (
+              <div key={group.key} style={{ marginBottom: 48 }}>
+                <ScrollReveal>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    marginBottom: 20,
+                    paddingBottom: 14,
+                    borderBottom: `2px solid ${group.color}22`,
+                  }}>
+                    <div style={{
+                      width: 4, height: 28, background: group.color,
+                      borderRadius: 2, flexShrink: 0,
+                    }} />
+                    <div>
+                      <span style={{
+                        fontSize: 18, fontWeight: 800, color: 'var(--text)',
+                        letterSpacing: '-0.3px',
+                      }}>
+                        {group.label}
+                      </span>
+                      <span style={{
+                        fontSize: 13, color: 'var(--text-3)',
+                        marginLeft: 10, fontWeight: 500,
+                      }}>
+                        {group.fullName}
+                      </span>
+                    </div>
+                    <span style={{
+                      marginLeft: 'auto', fontSize: 11, fontWeight: 700,
+                      background: `${group.color}15`,
+                      color: group.color,
+                      border: `1px solid ${group.color}30`,
+                      borderRadius: 20, padding: '3px 10px',
+                    }}>
+                      {items.length} {items.length === 1 ? 'resource' : 'resources'}
+                    </span>
+                  </div>
+                </ScrollReveal>
+                <div className="row g-3">
+                  {items.map((r, i) => (
+                    <div key={`${r.title}-${i}`} className="col-12 col-sm-6 col-md-4">
+                      <ScrollReveal delay={Math.min((i % 5) + 1, 6)}>
+                        <ResourceCard
+                          title={r.title}
+                          description={r.description ?? r.desc}
+                          type={r.type}
+                          linkUrl={r.url || '#'}
+                          accent={group.color}
+                        />
+                      </ScrollReveal>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Resources with non-conference types (e.g. general docs/links) */}
+          {others.length > 0 && (
+            <div>
+              <ScrollReveal>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  marginBottom: 20,
+                  paddingBottom: 14,
+                  borderBottom: '2px solid var(--border)',
+                }}>
+                  <div style={{
+                    width: 4, height: 28, background: 'var(--text-3)',
+                    borderRadius: 2, flexShrink: 0,
+                  }} />
+                  <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+                    General Resources
+                  </span>
+                </div>
+              </ScrollReveal>
+              <div className="row g-3">
+                {others.map((r, i) => (
+                  <div key={`${r.title}-${i}`} className="col-12 col-sm-6 col-md-4">
+                    <ScrollReveal delay={Math.min((i % 5) + 1, 6)}>
+                      <ResourceCard
+                        title={r.title}
+                        description={r.description ?? r.desc}
+                        type={r.type}
+                        linkUrl={r.url || '#'}
+                        accent={page.accent}
+                      />
+                    </ScrollReveal>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>
