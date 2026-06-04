@@ -9,6 +9,10 @@ export const metadata = {
   },
   description:
     'The central knowledge and resource hub for AIESEC in India 26.27. Access functional resources, strategy documents, and more.',
+  icons: {
+    icon: '/images/aiesec-human-white.png',
+    apple: '/images/aiesec-human-white.png',
+  },
 };
 
 export default function RootLayout({ children }) {
