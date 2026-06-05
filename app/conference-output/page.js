@@ -113,7 +113,7 @@ export default async function ConferenceOutputPage() {
         subtitle={page.subtitle}
         accent={page.accent}
         eyebrow="Conference Hub"
-        image="https://picsum.photos/seed/conference-hero/800/500"
+        image="/images/placeholder-cards/conference-output.jpg"
       />
 
       {/* ── Conference types ── */}

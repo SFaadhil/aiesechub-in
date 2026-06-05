@@ -42,14 +42,14 @@ const FEATURED = [
     title: 'Functional Hub',
     desc: 'Access resources for all portfolios — iGV, oGV, MKT, BD, PM, FnL and more.',
     color: '#037ef3',
-    img: 'https://picsum.photos/seed/feat-functional/800/400',
+    img: '/images/placeholder-cards/functional-hub.jpg',
   },
   {
     href: '/conference-output',
     title: 'Conference Output',
     desc: 'Materials, decisions, and resources from national and regional conferences.',
     color: '#f85a40',
-    img: 'https://picsum.photos/seed/feat-conference/800/400',
+    img: '/images/placeholder-cards/conference-output.jpg',
   },
   {
     href: '/rnr',

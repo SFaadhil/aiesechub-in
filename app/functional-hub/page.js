@@ -50,7 +50,7 @@ export default function FunctionalHubPage() {
         title="Functional Hub"
         subtitle="Browse all 11 portfolio hubs. Click any card to access resources, guides, and tools for your function."
         eyebrow="Portfolios"
-        image="https://picsum.photos/seed/hub-index/800/500"
+        image="/images/placeholder-cards/functional-hub.jpg"
       />
 
       <section className="section-py">

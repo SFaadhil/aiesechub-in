@@ -9,17 +9,17 @@ import { fetchHubResources } from '@/lib/sheets';
 export const revalidate = 60;
 
 const HUB_IMAGES = {
-  igv:        'https://picsum.photos/seed/igv-hero/1200/500',
-  ogv:        'https://picsum.photos/seed/ogv-hero/1200/500',
-  igtae:      'https://picsum.photos/seed/igtae-hero/1200/500',
-  ogtae:      'https://picsum.photos/seed/ogtae-hero/1200/500',
-  mkt:        'https://picsum.photos/seed/mkt-hero/1200/500',
-  bd:         'https://picsum.photos/seed/bd-hero/1200/500',
-  pm:         'https://picsum.photos/seed/pm-hero/1200/500',
-  fnl:        'https://picsum.photos/seed/fnl-hero/1200/500',
+  igv:        '/images/placeholder-cards/igv.jpeg',
+  ogv:        '/images/placeholder-cards/ogv.jpeg',
+  igtae:      '/images/placeholder-cards/igt.png',
+  ogtae:      '/images/placeholder-cards/ogta.jpeg',
+  mkt:        '/images/placeholder-cards/mkt.jpeg',
+  bd:         '/images/placeholder-cards/BD.jpeg',
+  pm:         '/images/placeholder-cards/pm.png',
+  fnl:        '/images/placeholder-cards/fnl.png',
   im:         'https://picsum.photos/seed/im-hero/1200/500',
-  od:         'https://picsum.photos/seed/od-hero/1200/500',
-  expansions: 'https://picsum.photos/seed/expansions-hero/1200/500',
+  od:         '/images/placeholder-cards/OD.jpeg',
+  expansions: '/images/placeholder-cards/exp.png',
 };
 
 function InfoIcon() {

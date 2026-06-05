@@ -5,11 +5,11 @@ const IMAGES = {
   ogv:        '/images/placeholder-cards/ogv.jpeg',
   igtae:      '/images/placeholder-cards/igt.png',
   ogtae:      '/images/placeholder-cards/ogta.jpeg',
-  mkt:        '/images/placeholder-cards/mkt.png',
+  mkt:        '/images/placeholder-cards/mkt.jpeg',
   bd:         '/images/placeholder-cards/BD.jpeg',
   pm:         '/images/placeholder-cards/pm.png',
   fnl:        '/images/placeholder-cards/fnl.png',
-  od:         'https://picsum.photos/seed/od-org/600/300',
+  od:         '/images/placeholder-cards/OD.jpeg',
   expansions: '/images/placeholder-cards/exp.png',
 };
 
