@@ -11,13 +11,13 @@ function mcImg(member) {
   return `/images/mcvp/${member.name} - ${member.shortRole}.${member.ext ?? 'jpg'}`;
 }
 
-function PdfIcon() {
+function ArrowIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ flexShrink: 0 }} aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+      aria-hidden="true">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
     </svg>
   );
 }
@@ -319,65 +319,33 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
 
           <div className="row g-3">
             {compendiumDocs.map((doc, i) => {
-              const isMain = doc.main === true || doc.main === 'true';
+              const isMain = doc.main === true || String(doc.main).toLowerCase() === 'true';
               const href = doc.url || (doc.file ? `/compendium/${encodeURIComponent(doc.file)}` : '#');
               return (
-              <div
-                key={doc.file ?? doc.name ?? i}
-                className={isMain ? 'col-12' : 'col-12 col-sm-6 col-md-4 col-lg-3'}
-                style={{ display: 'flex' }}
-              >
-                <ScrollReveal delay={Math.min((i % 5) + 1, 6)} className="w-100 h-100">
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      gap: 12,
-                      width: '100%',
-                      height: '100%',
-                      background: 'var(--primary)',
-                      color: '#fff',
-                      borderRadius: 'var(--radius-md)',
-                      padding: isMain ? '20px 24px' : '16px 18px',
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      transition: 'filter var(--transition-fast), transform var(--transition-fast)',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.filter = 'brightness(0.88)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.filter = 'brightness(1)';
-                      e.currentTarget.style.transform = 'none';
-                    }}
-                  >
-                    <PdfIcon />
-                    {isMain ? (
-                      <>
-                        <span style={{ fontSize: 16 }}>{doc.name}</span>
-                        <span style={{
-                          marginLeft: 'auto', fontSize: 11, fontWeight: 600,
-                          background: 'rgba(255,255,255,0.20)',
-                          borderRadius: 6, padding: '3px 8px', flexShrink: 0,
-                        }}>
-                          MAIN
-                        </span>
-                      </>
-                    ) : (
-                      <span style={{ fontSize: 13, lineHeight: 1.4 }}>
-                        {doc.letter && <span style={{ fontWeight: 900 }}>[{doc.letter}]</span>}
-                        {doc.letter ? ' ' : ''}{doc.name}
+                <div
+                  key={doc.file ?? doc.name ?? i}
+                  className={isMain ? 'col-12' : 'col-12 col-sm-6 col-md-4 col-lg-3'}
+                  style={{ display: 'flex' }}
+                >
+                  <ScrollReveal delay={Math.min((i % 5) + 1, 6)} className="w-100 h-100">
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`compendium-card${isMain ? ' compendium-card-main' : ''}`}
+                    >
+                      <span className="compendium-badge">
+                        {isMain ? 'MAIN' : doc.letter}
                       </span>
-                    )}
-                  </a>
-                </ScrollReveal>
-              </div>
+                      <span className="compendium-title">
+                        {doc.name}
+                      </span>
+                      <span className="compendium-arrow">
+                        <ArrowIcon />
+                      </span>
+                    </a>
+                  </ScrollReveal>
+                </div>
               );
             })}
           </div>
