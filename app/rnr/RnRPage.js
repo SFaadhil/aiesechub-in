@@ -117,7 +117,7 @@ function HeroSection() {
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/MVP logo.PNG"
+                  src="/images/MVP logo.png"
                   alt="MVP Logo"
                   style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                 />

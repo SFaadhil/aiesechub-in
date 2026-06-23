@@ -119,7 +119,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
             <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-2)', marginTop: 16 }}>
                Through the 1980s and 1990s, AIESEC in India expanded steadily across institutions,
               building a reputation for developing high quality exchange experiences and developing functional leaders at the local and national level.
-              By the 2000s, the entity had grown to X LC&apos;s and was consistently ranked among the top performing entities globally.
+              By the 2000s, the entity had grown to 15+ LC&apos;s and was consistently ranked among the top performing entities globally.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={3}>
