@@ -140,7 +140,7 @@ export default function AiesecIndiaPage({ compendium: sheetCompendium }) {
           <ScrollReveal>
             <div className="accent-line" />
             <h2 style={{ fontSize: 28, fontWeight: 800, margin: 0, color: 'var(--text)' }}>
-              MC Conqueror&apos;s
+              MC Zidd
             </h2>
             <p style={{ fontSize: 15, color: 'var(--text-3)', marginTop: 4, marginBottom: 32 }}>
               Member Committee 26.27 of AIESEC in India

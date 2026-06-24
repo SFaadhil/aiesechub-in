@@ -61,8 +61,8 @@ const FEATURED = [
 ];
 
 const STATS = [
-  { value: '20+',   label: 'Local Committees' },
-  { value: '2500+', label: 'Active Members' },
+  { value: '19',   label: 'Local Committees' },
+  { value: '2000+', label: 'Active Members' },
   { value: '26.27', label: 'Current Term' },
 ];
 
