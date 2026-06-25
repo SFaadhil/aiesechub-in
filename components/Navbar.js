@@ -499,29 +499,9 @@ export default function Navbar() {
           </div>
 
           {!query && (
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 10 }}>
-                Try searching for
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                {['Faadhil', 'iGV Hub', 'Compendium', 'Tier 1', 'Finance Policy', 'Hyderabad', 'NEC 2019', 'Board of Advisors'].map((hint) => (
-                  <button key={hint} onClick={() => setQuery(hint)} style={{
-                    fontSize: 12, fontWeight: 500, color: 'var(--text-2)',
-                    background: 'var(--bg-alt)', border: '1px solid var(--border)',
-                    borderRadius: 20, padding: '4px 13px', cursor: 'pointer',
-                    transition: 'border-color 150ms, background 150ms',
-                  }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-2)'; }}
-                  >
-                    {hint}
-                  </button>
-                ))}
-              </div>
-              <p style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 16, marginBottom: 0 }}>
-                Press <kbd style={{ background:'var(--bg-alt)', border:'1px solid var(--border)', borderRadius:4, padding:'1px 5px', fontSize:10 }}>Esc</kbd> to close
-              </p>
-            </div>
+            <p style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 4, marginBottom: 0 }}>
+              Press <kbd style={{ background:'var(--bg-alt)', border:'1px solid var(--border)', borderRadius:4, padding:'1px 5px', fontSize:10 }}>Esc</kbd> to close
+            </p>
           )}
 
           {query.trim().length >= 2 && (
