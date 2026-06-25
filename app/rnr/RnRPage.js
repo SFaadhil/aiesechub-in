@@ -269,7 +269,7 @@ function DashboardSection() {
           {/* Portfolio toggles */}
           <div style={{ marginTop:12, paddingTop:12, borderTop:'1px solid var(--border)' }}>
             <span style={{ fontSize:11, fontWeight:600, color:'var(--text-3)', marginRight:10, textTransform:'uppercase', letterSpacing:'0.5px' }}>Portfolios:</span>
-            {PORTFOLIOS.map((p) => {
+            {PORTFOLIOS.filter((p) => p.key !== 'EXP').map((p) => {
               const on = visiblePf.has(p.key);
               // Entity uses near-black — swap to amber accent so the chip is legible
               const chipColor = on

@@ -8,7 +8,7 @@ const PAGE_STATUS_LIVE = true;
 
 export const metadata = {
   title: 'Functional Hub',
-  description: 'Browse all 11 AIESEC India functional portfolio hubs.',
+  description: 'Browse all 10 AIESEC India functional portfolio hubs.',
 };
 
 const GROUPS = [
@@ -27,8 +27,8 @@ const GROUPS = [
   {
     id: 'support',
     label: 'Support Functions',
-    sub: 'IM · OD · Expansions',
-    slugs: ['im', 'od', 'expansions'],
+    sub: 'IM · Expansions',
+    slugs: ['im', 'expansions'],
   },
 ];
 
@@ -39,7 +39,6 @@ const COLOR_LEGEND = [
   { label: 'BD',            color: '#f59e0b' },
   { label: 'PM',            color: '#7552CC' },
   { label: 'FnL',           color: '#00c16e' },
-  { label: 'OD',       color: '#8b9ab0' },
 ];
 
 export default function FunctionalHubPage() {
@@ -48,7 +47,7 @@ export default function FunctionalHubPage() {
     <>
       <PageHero
         title="Functional Hub"
-        subtitle="Browse all 11 portfolio hubs. Click any card to access resources, guides, and tools for your function."
+        subtitle="Browse all 10 portfolio hubs. Click any card to access resources, guides, and tools for your function."
         eyebrow="Portfolios"
         image="/images/placeholder-cards/functional-hub.jpg"
       />

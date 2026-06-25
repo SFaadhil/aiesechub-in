@@ -52,7 +52,8 @@
       "Bash(taskkill /PID 16880 /F)",
       "PowerShell(Stop-Process -Id 16880 -Force)",
       "PowerShell($proc = Get-NetTCPConnection -LocalPort 3000 -State Listen | Select-Object -ExpandProperty OwningProcess; Stop-Process -Id $proc -Force -ErrorAction SilentlyContinue; Write-Output \"Killed PID $proc\")",
-      "Bash(grep -v \"//\\\\|section-\")"
+      "Bash(grep -v \"//\\\\|section-\")",
+      "Bash(powershell -NoProfile -Command \"Get-Process -Id 27928 -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,Path,StartTime\")"
     ]
   }
 }

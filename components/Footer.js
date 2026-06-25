@@ -33,7 +33,6 @@ const ALL_HUB_GROUPS = [
     heading: 'Support',
     links: [
       { href: '/functional-hub/im',         label: 'IM',         slug: 'im' },
-      { href: '/functional-hub/od',         label: 'OD',         slug: 'od' },
       { href: '/functional-hub/expansions', label: 'Expansions', slug: 'expansions' },
     ],
   },
@@ -69,20 +68,9 @@ function LinkedInIcon() {
   );
 }
 
-function FacebookIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
-      stroke="rgba(255,255,255,0.7)" strokeWidth="1.8"
-      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-    </svg>
-  );
-}
-
 const SOCIALS = [
-  { label: 'Instagram', Icon: InstagramIcon },
-  { label: 'LinkedIn',  Icon: LinkedInIcon },
-  { label: 'Facebook',  Icon: FacebookIcon },
+  { label: 'Instagram', Icon: InstagramIcon, href: 'https://www.instagram.com/aiesec_india/?hl=en' },
+  { label: 'LinkedIn',  Icon: LinkedInIcon,  href: 'https://www.linkedin.com/company/aiesecindia/posts/?feedView=all' },
 ];
 
 export default function Footer() {
@@ -111,8 +99,16 @@ export default function Footer() {
               young people across India since 1981.
             </p>
             <div className="d-flex gap-2 mt-4">
-              {SOCIALS.map(({ label, Icon }) => (
-                <a key={label} href="#" className="social-icon" aria-label={label} title={label}>
+              {SOCIALS.map(({ label, Icon, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  aria-label={label}
+                  title={label}
+                >
                   <Icon />
                 </a>
               ))}

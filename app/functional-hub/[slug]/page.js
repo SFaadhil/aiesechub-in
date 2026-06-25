@@ -18,7 +18,6 @@ const HUB_IMAGES = {
   pm:         '/images/placeholder-cards/pm.png',
   fnl:        '/images/placeholder-cards/fnl.png',
   im:         'https://picsum.photos/seed/im-hero/1200/500',
-  od:         '/images/placeholder-cards/OD.jpeg',
   expansions: '/images/placeholder-cards/exp.png',
 };
 

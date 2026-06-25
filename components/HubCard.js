@@ -9,7 +9,6 @@ const IMAGES = {
   bd:         '/images/placeholder-cards/BD.jpeg',
   pm:         '/images/placeholder-cards/pm.png',
   fnl:        '/images/placeholder-cards/fnl.png',
-  od:         '/images/placeholder-cards/OD.jpeg',
   expansions: '/images/placeholder-cards/exp.png',
 };
 
