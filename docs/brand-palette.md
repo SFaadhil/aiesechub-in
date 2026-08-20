@@ -239,6 +239,13 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 - Pure CSS hover via `.a2030-card-inner` class (`translateY(-2px)` + `--shadow-md`)
 - External-link SVG icon beside label
 
+### GCP Hub (`app/gcp-hub/GcpHubPage.js`, `app/login/page.js`)
+- Public page: `PageHero` + `.gcp-filter-bar` (search + 2 selects) + `.gcp-grid` of `.gcp-card`s, paginated 12/page
+- Each card top-border colour = the GCP's portfolio accent (`--gcp-accent` custom property, set inline per card from `lib/gcp-data.js`)
+- Clicking a card opens `.gcp-modal` (via shared `components/GcpModal.js`) showing full detail; "Submit a GCP" opens the same modal shell with `GcpSubmitForm`
+- `/login` — shared-password gate (`GcpLoginGate`) protects `GcpAdminDashboard`, which lists pending submissions with Approve (`.btn-approve-brand`, green) / Reject (`.btn-reject-brand`, red outline) actions
+- Backed by Supabase (`gcp_submissions` table, schema in `supabase/gcp-hub-schema.sql`) — submissions land as `status='pending'` (invisible "in-view" queue, RLS-enforced), only flip to `status='approved'` and appear publicly once a reviewer approves them in `/login`
+
 ### RnR Dashboard (`app/rnr/RnRPage.js`)
 - Three sub-columns per portfolio: **Tier badge · Rank · Points**
 - Tier badge abbreviated (T1–T5, TX) with tier color from `TIER_META`
@@ -294,6 +301,10 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 | Homepage | AIESEC 2025 removed from FEATURED cards (5 cards remain) |
 | AIESEC Way | A2030 external card added to Resources section, links to `https://a2030.aiesec.org/` |
 | AIESEC Way | A2030 card uses CSS class `.a2030-card-inner` for hover (Server Component — no JS event handlers) |
+| Launch video | `/brag` app-store launch video authored in `brag-output/` (Hyperframes); reuses hero gradient, portfolio accents, feature-card & leaderboard patterns — no new tokens introduced |
+| GCP Hub | `/gcp-hub` (public) + `/login` (reviewer queue) added — first pages backed by a real datastore (Supabase). No new brand colours: portfolio badges reuse `lib/data.js` hub accents, approve/reject actions reuse existing `#00c16e` (FnL green) and `#c62828` (badge-pdf red) |
+| GCP Hub | New generic form-control classes (`.gcp-input` / `.gcp-select` / `.gcp-textarea` / `.gcp-label`) — first reusable form styling in the design system, modelled on `.search-box-input` |
+| GCP Hub | New card (`.gcp-card`), filter bar (`.gcp-filter-bar`), and modal (`.gcp-modal-backdrop` / `.gcp-modal`) patterns — modal reuses the search overlay's blur-backdrop + `fadeUp` animation approach |
 
 ---
 
@@ -311,3 +322,8 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 | `app/rnr/RnRPage.js` | Full RnR dashboard (client component) |
 | `app/aiesec-way/page.js` | AIESEC Way page with values + resources |
 | `lib/data.js` | Static page content, hub definitions |
+| `app/gcp-hub/GcpHubPage.js` | Public GCP Hub — filters, grid, submit/detail modals |
+| `app/login/page.js` | Reviewer gate + queue for approving/rejecting GCPs |
+| `lib/gcp-data.js` | GCP portfolio/entity/month options, field config |
+| `lib/supabase.js` | Public + admin (service role) Supabase clients |
+| `supabase/gcp-hub-schema.sql` | `gcp_submissions` table + RLS policies — run once in Supabase SQL Editor |

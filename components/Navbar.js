@@ -15,6 +15,7 @@ const NAV_LINKS_BEFORE = [
 const NAV_LINKS_AFTER = [
   { href: '/conference-output', label: 'Conference Output' },
   { href: '/rnr',               label: 'MVP' },
+  { href: '/gcp-hub',           label: 'GCP Hub' },
 ];
 
 /* ── Icons ─────────────────────────────────────────────────────────── */

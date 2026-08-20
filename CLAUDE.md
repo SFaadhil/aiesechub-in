@@ -13,7 +13,12 @@ npm run lint     # ESLint via next lint
 npm run start    # Serve production build
 ```
 
-No test suite exists yet. No environment variables are required — this is a fully static frontend with no backend.
+No test suite exists yet. Most of the site is a fully static frontend with no backend — the one exception is **GCP Hub** (`/gcp-hub` + `/login`), which is backed by Supabase and requires environment variables (see `.env.local`, not committed):
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` — public Supabase client (reads approved GCPs, inserts pending submissions)
+- `SUPABASE_SERVICE_ROLE_KEY` — server-only, used by `/login` review actions to bypass RLS
+- `GCP_ADMIN_PASSWORD`, `GCP_SESSION_SECRET` — shared-password gate for `/login` (see `lib/gcp-auth.js`)
+
+Whichever host runs `npm run build`/`npm run start` in production needs these same variables set.
 
 ---
 
@@ -32,6 +37,7 @@ No test suite exists yet. No environment variables are required — this is a fu
 - **Bootstrap 5.3** loaded via CDN in `app/layout.js` (`<head>` CSS + `<body>` JS bundle). No `npm install bootstrap`.
 - **Custom CSS design tokens** in `app/globals.css` — all spacing, colour, radius, shadow, and animation values are CSS custom properties on `:root`. Dark mode via `[data-theme='dark']` toggled in `localStorage`.
 - **`@/` path alias** maps to the repo root (configured in `jsconfig.json`).
+- **Supabase** (`@supabase/supabase-js`) — the datastore for GCP Hub only. `lib/supabase.js` exports `getSupabase()` (anon key, RLS-respecting — safe in Client Components) and `getSupabaseAdmin()` (service role key, bypasses RLS — **server-only**, never import from a Client Component).
 
 ### Server vs Client Components
 The project follows a strict split:
@@ -73,7 +79,15 @@ Never hand-code `ENTITY_TIERS` or `LC_PORTFOLIO_TIERS` — they are auto-derived
 | `/global-academies` | `app/global-academies/page.js` |
 | `/conference-output` | `app/conference-output/page.js` |
 | `/rnr` | `app/rnr/page.js` → `app/rnr/RnRPage.js` |
+| `/gcp-hub` | `app/gcp-hub/page.js` → `app/gcp-hub/GcpHubPage.js` — public Good Case Practices hub (Supabase-backed) |
+| `/login` | `app/login/page.js` — reviewer queue for approving/rejecting GCP submissions; shared-password gate, **intentionally not in `NAV_LINKS`** |
 | `/aiesec-2025` | `app/aiesec-2025/page.js` — **removed from nav and homepage**; route still exists |
+
+### GCP Hub (Supabase-backed)
+
+The only part of the site with a real backend. Submissions flow: public form (`components/GcpSubmitForm.js`) → `POST /api/gcp/submit` → inserted into Supabase `gcp_submissions` with `status='pending'` (invisible to the public — RLS only allows the anon key to `select` rows where `status='approved'`). A reviewer signs in at `/login` (shared password, `GCP_ADMIN_PASSWORD`, checked in `app/api/gcp/login/route.js` which sets an HMAC-signed cookie — see `lib/gcp-auth.js`) and sees the pending queue, fetched server-side with the service-role client. Approve/Reject (`POST /api/gcp/review`) flips `status`, using `getSupabaseAdmin()` to bypass RLS; once `approved`, the row is immediately visible on `/gcp-hub` (served via `GET /api/gcp/list`, filterable by `q`/`portfolio`/`entity`, paginated).
+
+Schema + RLS policies live in `supabase/gcp-hub-schema.sql` — run once in the Supabase SQL Editor, not applied automatically. `lib/gcp-data.js` is the single source of truth for portfolio options (reuses `HUBS` from `lib/data.js`), entity options (reuses `ENTITY_TIERS` from `lib/rnr-data.js`), and the submission form field config.
 
 ### Shared Components
 

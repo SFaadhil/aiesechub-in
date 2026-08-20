@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>AIESEC India Hub — Portrait Launch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --blue: #037ef3; --teal: #0CB9C1;
+        --igv:#f85a40; --mkt:#037ef3; --bd:#f59e0b; --pm:#7552CC; --fnl:#00c16e;
+        --gold:#f59e0b; --silver:#94a3b8; --bronze:#cd7f32;
+        --stage: #05070d;
+      }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000;
+        font-family: "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+      #root { position: relative; }
+      .scene { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden;
+        background: var(--stage); display: flex; align-items: center; justify-content: center; }
+      .stack { display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; width: 100%; padding: 0 70px; }
+
+      .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(3,126,243,0.42), transparent 62%);
+        filter: blur(20px); pointer-events: none; }
+      .glow-teal { background: radial-gradient(circle, rgba(12,185,193,0.30), transparent 62%); }
+
+      .word { position: absolute; font-weight: 800; color: #fff; line-height: 0.98;
+        letter-spacing: -3px; text-shadow: 0 0 60px rgba(3,126,243,0.55); width: 940px; text-align: center; }
+      .huge { font-size: 128px; }
+      .mid  { font-size: 108px; }
+
+      /* numbers */
+      .numblock { position: absolute; width: 940px; text-align: center; }
+      .bignum { font-size: 300px; font-weight: 800; color: #fff; line-height: 0.9;
+        letter-spacing: -10px; text-shadow: 0 0 80px rgba(3,126,243,0.6); }
+      .bignum .accent { color: var(--blue); }
+      .numlabel { margin-top: 18px; font-size: 54px; font-weight: 700; letter-spacing: 6px;
+        text-transform: uppercase; color: rgba(255,255,255,0.72); }
+
+      /* title / outro */
+      .brandname { font-size: 88px; font-weight: 800; color: #fff; letter-spacing: -2px;
+        line-height: 1.02; text-shadow: 0 0 70px rgba(3,126,243,0.55); }
+      .brandterm { margin-top: 22px; font-size: 40px; font-weight: 700; letter-spacing: 12px;
+        text-transform: uppercase; color: var(--blue); }
+      .tagline { margin-top: 30px; font-size: 44px; font-weight: 500; color: rgba(255,255,255,0.82); }
+      .urlpill { margin-top: 46px; display: inline-block; padding: 22px 60px; border-radius: 60px;
+        background: rgba(3,126,243,0.16); border: 2px solid rgba(3,126,243,0.55);
+        font-size: 46px; font-weight: 800; color: #fff; letter-spacing: 1px;
+        box-shadow: 0 0 60px rgba(3,126,243,0.4); }
+      .outro-logo { width: 230px; height: 230px; object-fit: contain; margin-bottom: 40px;
+        filter: drop-shadow(0 0 50px rgba(3,126,243,0.65)); }
+
+      /* search */
+      .s-head { position: absolute; top: 470px; width: 940px; text-align: center;
+        font-size: 46px; font-weight: 800; color: #fff; letter-spacing: -1px; }
+      .searchbar { position: absolute; top: 640px; left: 100px; width: 880px; height: 128px;
+        border-radius: 64px; background: #10182b; border: 2px solid rgba(255,255,255,0.10);
+        box-shadow: 0 0 70px rgba(3,126,243,0.28); display: flex; align-items: center;
+        padding: 0 46px; gap: 26px; }
+      .s-ico { width: 40px; height: 40px; color: #6b7a92; flex-shrink: 0; }
+      .s-typed { font-size: 44px; font-weight: 600; color: #fff; white-space: pre; }
+      .s-caret { display: inline-block; width: 4px; height: 52px; background: var(--blue); transform: translateY(8px); }
+      .sugbox { position: absolute; top: 800px; left: 100px; width: 880px;
+        display: flex; flex-direction: column; gap: 20px; }
+      .sug { background: #0f1626; border: 1px solid rgba(255,255,255,0.09); border-radius: 22px;
+        padding: 30px 36px; display: flex; align-items: center; gap: 26px; }
+      .sug-ico { width: 60px; height: 60px; border-radius: 16px; flex-shrink: 0; display: flex;
+        align-items: center; justify-content: center; font-size: 30px; line-height: 1; }
+      .sug-t { font-size: 38px; font-weight: 600; color: #fff; }
+      .sug-b { margin-left: auto; font-size: 24px; font-weight: 800; padding: 8px 20px;
+        border-radius: 24px; letter-spacing: 0.5px; }
+
+      /* portfolios */
+      .p-head { position: absolute; top: 360px; width: 940px; text-align: center;
+        font-size: 72px; font-weight: 800; color: #fff; letter-spacing: -1.5px;
+        text-shadow: 0 0 60px rgba(3,126,243,0.5); }
+      .p-grid { position: absolute; top: 560px; left: 90px; width: 900px;
+        display: flex; flex-wrap: wrap; gap: 26px; justify-content: center; }
+      .chip { width: 424px; border-radius: 26px; padding: 40px 40px;
+        display: flex; align-items: center; gap: 28px; color: #fff;
+        border: 1px solid rgba(255,255,255,0.12); }
+      .chip-em { font-size: 56px; line-height: 1; }
+      .chip-n { font-size: 50px; font-weight: 800; letter-spacing: -1px; }
+      .chip-f { font-size: 26px; font-weight: 600; color: rgba(255,255,255,0.8); margin-top: 4px; }
+
+      /* leaderboard */
+      .l-head { position: absolute; top: 380px; width: 940px; text-align: center;
+        font-size: 64px; font-weight: 800; color: #fff; letter-spacing: -1.4px;
+        text-shadow: 0 0 60px rgba(3,126,243,0.5); }
+      .l-card { position: absolute; top: 620px; left: 100px; width: 880px;
+        display: flex; flex-direction: column; gap: 24px; }
+      .l-row { background: #0f1626; border: 1px solid rgba(255,255,255,0.09); border-radius: 24px;
+        border-left: 10px solid transparent; padding: 40px 44px; display: flex; align-items: center; }
+      .l-rank { width: 110px; font-size: 60px; font-weight: 800; color: #fff; }
+      .l-lc { flex: 1; font-size: 44px; font-weight: 700; color: #fff; }
+      .l-tier { font-size: 30px; font-weight: 800; padding: 12px 26px; border-radius: 34px;
+        letter-spacing: 0.5px; }
+
+      .flash { position: absolute; inset: 0; background: #ffffff; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920"
+         data-duration="19" data-fps="30">
+
+      <!-- ══ S1 HOOK ══ -->
+      <section id="s1" class="scene clip" style="opacity:0" data-start="0" data-duration="2.0" data-track-index="1">
+        <div class="glow" id="s1-glow" data-layout-allow-overflow="true"></div>
+        <div class="word huge" id="s1-w1" data-layout-allow-overflow="true">EVERYTHING.</div>
+        <div class="word huge" id="s1-w2" style="opacity:0" data-layout-allow-overflow="true">IN ONE<br>PLACE.</div>
+      </section>
+
+      <!-- ══ S2 TITLE ══ -->
+      <section id="s2" class="scene clip" style="opacity:0" data-start="2.0" data-duration="1.8" data-track-index="2">
+        <div class="glow" id="s2-glow" data-layout-allow-overflow="true"></div>
+        <div class="stack">
+          <div class="brandname" id="s2-name">AIESEC in<br>India Hub</div>
+          <div class="brandterm" id="s2-term">Term 26.27</div>
+        </div>
+      </section>
+
+      <!-- ══ S3 NUMBERS ══ -->
+      <section id="s3" class="scene clip" style="opacity:0" data-start="3.8" data-duration="3.0" data-track-index="3">
+        <div class="glow" id="s3-glow" data-layout-allow-overflow="true"></div>
+        <div class="numblock" id="s3-n1">
+          <div class="bignum">19</div><div class="numlabel">Local Committees</div>
+        </div>
+        <div class="numblock" id="s3-n2" style="opacity:0">
+          <div class="bignum"><span class="accent">2000</span>+</div><div class="numlabel">Members</div>
+        </div>
+        <div class="numblock" id="s3-n3" style="opacity:0">
+          <div class="bignum"><span class="accent">1</span></div><div class="numlabel">Hub</div>
+        </div>
+      </section>
+
+      <!-- ══ S4 SEARCH ══ -->
+      <section id="s4" class="scene clip" style="opacity:0" data-start="6.8" data-duration="2.5" data-track-index="4">
+        <div class="s-head">Find anything. Instantly.</div>
+        <div class="searchbar">
+          <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="s-typed" id="s4-typed"></span><span class="s-caret" id="s4-caret"></span>
+        </div>
+        <div class="sugbox">
+          <div class="sug" id="s4-s1"><div class="sug-ico" style="background:#3a1a15;color:#f85a40">🤝</div><div class="sug-t">iGV Matching Guide</div><div class="sug-b" style="color:#f85a40;background:#3a1a15">DOC</div></div>
+          <div class="sug" id="s4-s2"><div class="sug-ico" style="background:#153320;color:#3ad07f">📋</div><div class="sug-t">iGV Standards &amp; Processes</div><div class="sug-b" style="color:#3ad07f;background:#153320">DRIVE</div></div>
+          <div class="sug" id="s4-s3"><div class="sug-ico" style="background:#0e2c4a;color:#4aa8ff">🗺️</div><div class="sug-t">EP Journey Framework</div><div class="sug-b" style="color:#e0a94a;background:#332512">SLIDES</div></div>
+        </div>
+      </section>
+
+      <!-- ══ S5 PORTFOLIOS ══ -->
+      <section id="s5" class="scene clip" style="opacity:0" data-start="9.3" data-duration="2.3" data-track-index="5">
+        <div class="p-head" id="s5-head">Every portfolio.</div>
+        <div class="p-grid">
+          <div class="chip" id="s5-c1" style="background:rgba(248,90,64,0.16);border-color:rgba(248,90,64,0.5)"><div class="chip-em">🌍</div><div><div class="chip-n">iGV</div><div class="chip-f">Incoming Volunteer</div></div></div>
+          <div class="chip" id="s5-c2" style="background:rgba(248,90,64,0.16);border-color:rgba(248,90,64,0.5)"><div class="chip-em">✈️</div><div><div class="chip-n">oGV</div><div class="chip-f">Outgoing Volunteer</div></div></div>
+          <div class="chip" id="s5-c3" style="background:rgba(12,185,193,0.16);border-color:rgba(12,185,193,0.5)"><div class="chip-em">💼</div><div><div class="chip-n">iGTae</div><div class="chip-f">Incoming Talent</div></div></div>
+          <div class="chip" id="s5-c4" style="background:rgba(3,126,243,0.16);border-color:rgba(3,126,243,0.5)"><div class="chip-em">📣</div><div><div class="chip-n">MKT</div><div class="chip-f">Marketing</div></div></div>
+          <div class="chip" id="s5-c5" style="background:rgba(245,158,11,0.16);border-color:rgba(245,158,11,0.5)"><div class="chip-em">🤝</div><div><div class="chip-n">BD</div><div class="chip-f">Business Dev</div></div></div>
+          <div class="chip" id="s5-c6" style="background:rgba(117,82,204,0.16);border-color:rgba(117,82,204,0.5)"><div class="chip-em">👥</div><div><div class="chip-n">PM</div><div class="chip-f">People Mgmt</div></div></div>
+          <div class="chip" id="s5-c7" style="background:rgba(0,193,110,0.16);border-color:rgba(0,193,110,0.5)"><div class="chip-em">💰</div><div><div class="chip-n">FnL</div><div class="chip-f">Finance &amp; Legal</div></div></div>
+        </div>
+      </section>
+
+      <!-- ══ S6 LEADERBOARD ══ -->
+      <section id="s6" class="scene clip" style="opacity:0" data-start="11.6" data-duration="2.3" data-track-index="6">
+        <div class="l-head" id="s6-head">Ranked nationally.</div>
+        <div class="l-card">
+          <div class="l-row" id="s6-r1" style="border-left-color:#f59e0b"><div class="l-rank">1</div><div class="l-lc">AIESEC in Manipal</div><div class="l-tier" style="color:#f59e0b;background:#332612">T1</div></div>
+          <div class="l-row" id="s6-r2" style="border-left-color:#94a3b8"><div class="l-rank">2</div><div class="l-lc">AIESEC in Delhi-IIT</div><div class="l-tier" style="color:#cbd5e1;background:#1f2733">T1</div></div>
+          <div class="l-row" id="s6-r3" style="border-left-color:#cd7f32"><div class="l-rank">3</div><div class="l-lc">AIESEC in Pune</div><div class="l-tier" style="color:#e0a672;background:#2e2214">T2</div></div>
+        </div>
+      </section>
+
+      <!-- ══ S7 THREE-WORD ══ -->
+      <section id="s7" class="scene clip" style="opacity:0" data-start="13.9" data-duration="2.1" data-track-index="7">
+        <div class="glow glow-teal" id="s7-glow" data-layout-allow-overflow="true"></div>
+        <div class="word mid" id="s7-w1">SEARCH.</div>
+        <div class="word mid" id="s7-w2" style="opacity:0">RESOURCES.</div>
+        <div class="word mid" id="s7-w3" style="opacity:0">RECOGNITION.</div>
+      </section>
+
+      <!-- ══ S8 OUTRO ══ -->
+      <section id="s8" class="scene clip" style="opacity:0" data-start="16.0" data-duration="3.0" data-track-index="8">
+        <div class="glow" id="s8-glow" data-layout-allow-overflow="true"></div>
+        <div class="stack">
+          <img class="outro-logo" id="s8-logo" src="assets/img/aiesec-human-white.png" alt="AIESEC" />
+          <div class="brandname" id="s8-name">AIESEC India Hub</div>
+          <div class="brandterm" id="s8-term">Term 26.27</div>
+          <div class="tagline" id="s8-tag">Everything your LC needs.</div>
+          <div class="urlpill" id="s8-url">aiesechub.in</div>
+        </div>
+      </section>
+
+      <!-- ══ WHITE FLASH CUTS ══ -->
+      <div class="flash clip" id="fl1" style="opacity:0" data-start="1.9" data-duration="0.3" data-track-index="9"></div>
+      <div class="flash clip" id="fl2" style="opacity:0" data-start="13.8" data-duration="0.3" data-track-index="9"></div>
+      <div class="flash clip" id="fl3" style="opacity:0" data-start="15.9" data-duration="0.3" data-track-index="9"></div>
+
+      <!-- ══ AUDIO ══ -->
+      <audio id="music" src="assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3"
+             data-start="0" data-duration="19" data-track-index="10" data-volume="0.4"></audio>
+
+      <!-- S1 -->
+      <audio id="x1" src="assets/sfx/impact/impactPunch_medium_001.ogg" data-start="0.05" data-duration="0.6" data-track-index="11" data-volume="0.82"></audio>
+      <audio id="x2" src="assets/sfx/impact/impactPunch_medium_003.ogg" data-start="1.0" data-duration="0.6" data-track-index="12" data-volume="0.82"></audio>
+      <!-- S2 -->
+      <audio id="x3" src="assets/sfx/impact/impactSoft_medium_002.ogg" data-start="2.05" data-duration="0.6" data-track-index="13" data-volume="0.72"></audio>
+      <!-- S3 -->
+      <audio id="x4" src="assets/sfx/impact/impactPlate_medium_000.ogg" data-start="3.85" data-duration="0.6" data-track-index="11" data-volume="0.78"></audio>
+      <audio id="x5" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="4.7" data-duration="0.6" data-track-index="12" data-volume="0.78"></audio>
+      <audio id="x6" src="assets/sfx/impact/impactPunch_medium_001.ogg" data-start="5.7" data-duration="0.6" data-track-index="13" data-volume="0.85"></audio>
+      <!-- S4 typing -->
+      <audio id="k1" src="assets/sfx/keyboard/keypress-002.wav" data-start="6.95" data-duration="0.2" data-track-index="11" data-volume="0.55"></audio>
+      <audio id="k2" src="assets/sfx/keyboard/keypress-009.wav" data-start="7.08" data-duration="0.2" data-track-index="12" data-volume="0.55"></audio>
+      <audio id="k3" src="assets/sfx/keyboard/keypress-005.wav" data-start="7.21" data-duration="0.2" data-track-index="13" data-volume="0.55"></audio>
+      <audio id="k4" src="assets/sfx/keyboard/keypress-014.wav" data-start="7.34" data-duration="0.2" data-track-index="14" data-volume="0.55"></audio>
+      <audio id="k5" src="assets/sfx/keyboard/keypress-018.wav" data-start="7.47" data-duration="0.2" data-track-index="15" data-volume="0.55"></audio>
+      <audio id="d1" src="assets/sfx/interface/drop_001.ogg" data-start="7.72" data-duration="0.4" data-track-index="11" data-volume="0.52"></audio>
+      <audio id="d2" src="assets/sfx/interface/drop_002.ogg" data-start="7.92" data-duration="0.4" data-track-index="12" data-volume="0.5"></audio>
+      <audio id="d3" src="assets/sfx/interface/drop_002.ogg" data-start="8.12" data-duration="0.4" data-track-index="13" data-volume="0.5"></audio>
+      <!-- S5 -->
+      <audio id="w1" src="assets/sfx/casino/card-slide-2.ogg" data-start="9.32" data-duration="0.5" data-track-index="11" data-volume="0.6"></audio>
+      <audio id="p1" src="assets/sfx/interface/drop_002.ogg" data-start="9.48" data-duration="0.4" data-track-index="12" data-volume="0.55"></audio>
+      <audio id="p2" src="assets/sfx/interface/drop_002.ogg" data-start="10.32" data-duration="0.4" data-track-index="13" data-volume="0.55"></audio>
+      <!-- S6 -->
+      <audio id="r1" src="assets/sfx/interface/drop_001.ogg" data-start="11.78" data-duration="0.4" data-track-index="11" data-volume="0.58"></audio>
+      <audio id="r2" src="assets/sfx/interface/drop_001.ogg" data-start="11.98" data-duration="0.4" data-track-index="12" data-volume="0.58"></audio>
+      <audio id="r3" src="assets/sfx/interface/drop_001.ogg" data-start="12.18" data-duration="0.4" data-track-index="13" data-volume="0.58"></audio>
+      <!-- S7 -->
+      <audio id="t1" src="assets/sfx/impact/impactSoft_medium_001.ogg" data-start="13.95" data-duration="0.5" data-track-index="11" data-volume="0.76"></audio>
+      <audio id="t2" src="assets/sfx/impact/impactSoft_medium_002.ogg" data-start="14.6" data-duration="0.5" data-track-index="12" data-volume="0.76"></audio>
+      <audio id="t3" src="assets/sfx/impact/impactPunch_medium_003.ogg" data-start="15.3" data-duration="0.6" data-track-index="13" data-volume="0.82"></audio>
+      <!-- S8 -->
+      <audio id="o1" src="assets/sfx/casino/card-slide-5.ogg" data-start="16.1" data-duration="0.5" data-track-index="11" data-volume="0.6"></audio>
+      <audio id="o2" src="assets/sfx/impact/impactSoft_medium_003.ogg" data-start="16.22" data-duration="0.6" data-track-index="12" data-volume="0.72"></audio>
+      <audio id="o3" src="assets/sfx/impact/impactBell_heavy_000.ogg" data-start="18.52" data-duration="1.4" data-track-index="13" data-volume="0.88"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const PUNCH = "power4.out";
+
+      // hard-cut scene visibility: quick opacity in at each scene start
+      function cut(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, at); }
+      cut("#s1", 0.0); cut("#s2", 2.0); cut("#s3", 3.8); cut("#s4", 6.8);
+      cut("#s5", 9.3); cut("#s6", 11.6); cut("#s7", 13.9); cut("#s8", 16.0);
+
+      // white flash cuts (spike then out)
+      ["#fl1|1.9","#fl2|13.8","#fl3|15.9"].forEach(s => {
+        const parts = s.split("|"); const sel = parts[0]; const at = parseFloat(parts[1]);
+        tl.fromTo(sel, { opacity: 0 }, { opacity: 0.85, duration: 0.06, ease: "none" }, at);
+        tl.to(sel, { opacity: 0, duration: 0.16, ease: "power2.in" }, at + 0.06);
+      });
+
+      // glow breathing (deterministic, finite; stands in for bass pulse)
+      ["#s1-glow","#s2-glow","#s3-glow","#s7-glow","#s8-glow"].forEach((g, i) => {
+        tl.fromTo(g, { scale: 0.8, opacity: 0.5 }, { scale: 1.08, opacity: 0.95, duration: 0.9, ease: "sine.out", repeat: 1, yoyo: true }, i * 0.01);
+      });
+
+      // ---- S1 hook ----
+      tl.fromTo("#s1-w1", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: PUNCH }, 0.05);
+      tl.set("#s1-w1", { opacity: 0 }, 1.0);
+      tl.fromTo("#s1-w2", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: PUNCH }, 1.0);
+
+      // ---- S2 title ----
+      tl.fromTo("#s2-name", { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: PUNCH }, 2.05);
+      tl.from("#s2-term", { y: 24, opacity: 0, duration: 0.4, ease: "power3.out" }, 2.3);
+
+      // ---- S3 numbers (hard cut each) ----
+      tl.fromTo("#s3-n1", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.38, ease: PUNCH }, 3.85);
+      tl.set("#s3-n1", { opacity: 0 }, 4.7);
+      tl.fromTo("#s3-n2", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.38, ease: PUNCH }, 4.7);
+      tl.set("#s3-n2", { opacity: 0 }, 5.7);
+      tl.fromTo("#s3-n3", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.38, ease: PUNCH }, 5.7);
+
+      // ---- S4 search ----
+      tl.from("#s4 .s-head", { y: 20, opacity: 0, duration: 0.3, ease: "power3.out" }, 6.85);
+      tl.from("#s4 .searchbar", { y: 26, opacity: 0, scale: 0.97, duration: 0.35, ease: PUNCH }, 6.9);
+      (function () {
+        const full = "iGV matching guide"; const el = document.getElementById("s4-typed"); const o = { n: 0 };
+        tl.to(o, { n: full.length, duration: 0.7, ease: "none",
+          onUpdate() { el.textContent = full.slice(0, Math.round(o.n)); } }, 6.95);
+      })();
+      tl.to("#s4-caret", { opacity: 0, duration: 0.32, repeat: 2, yoyo: true, ease: "none" }, 6.95);
+      tl.to("#s4-caret", { opacity: 0, duration: 0.15, overwrite: "auto" }, 7.7);
+      tl.from("#s4-s1", { x: -30, opacity: 0, duration: 0.28, ease: PUNCH }, 7.72);
+      tl.from("#s4-s2", { x: -30, opacity: 0, duration: 0.28, ease: PUNCH }, 7.92);
+      tl.from("#s4-s3", { x: -30, opacity: 0, duration: 0.28, ease: PUNCH }, 8.12);
+
+      // ---- S5 portfolios ----
+      tl.fromTo("#s5-head", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: PUNCH }, 9.34);
+      ["#s5-c1","#s5-c2","#s5-c3","#s5-c4","#s5-c5","#s5-c6","#s5-c7"].forEach((c, i) => {
+        tl.from(c, { scale: 0.7, opacity: 0, duration: 0.3, ease: "back.out(1.8)" }, 9.48 + i * 0.11);
+      });
+
+      // ---- S6 leaderboard ----
+      tl.fromTo("#s6-head", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: PUNCH }, 11.64);
+      tl.from("#s6-r1", { x: -40, opacity: 0, duration: 0.3, ease: PUNCH }, 11.78);
+      tl.from("#s6-r2", { x: -40, opacity: 0, duration: 0.3, ease: PUNCH }, 11.98);
+      tl.from("#s6-r3", { x: -40, opacity: 0, duration: 0.3, ease: PUNCH }, 12.18);
+
+      // ---- S7 three-word ----
+      tl.fromTo("#s7-w1", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: PUNCH }, 13.95);
+      tl.set("#s7-w1", { opacity: 0 }, 14.6);
+      tl.fromTo("#s7-w2", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: PUNCH }, 14.6);
+      tl.set("#s7-w2", { opacity: 0 }, 15.3);
+      tl.fromTo("#s7-w3", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: PUNCH }, 15.3);
+
+      // ---- S8 outro (logo lock beat-locked 18.52) ----
+      tl.fromTo("#s8-logo", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }, 16.2);
+      tl.fromTo("#s8-name", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: PUNCH }, 16.4);
+      tl.from("#s8-term", { y: 20, opacity: 0, duration: 0.35, ease: "power3.out" }, 16.7);
+      tl.from("#s8-tag", { y: 22, opacity: 0, duration: 0.4, ease: "power3.out" }, 17.1);
+      tl.fromTo("#s8-url", { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, 18.52); // beat-locked: 18.52s
+      tl.to("#s8-glow", { scale: 1.15, opacity: 1, duration: 0.4, ease: "power2.out" }, 18.52);
+
+      // ---- music: full drive, hard duck under final bell ----
+      tl.to("#music", { volume: 0, duration: 0.4, ease: "power2.in" }, 18.55);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

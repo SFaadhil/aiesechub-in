@@ -53,7 +53,15 @@
       "PowerShell(Stop-Process -Id 16880 -Force)",
       "PowerShell($proc = Get-NetTCPConnection -LocalPort 3000 -State Listen | Select-Object -ExpandProperty OwningProcess; Stop-Process -Id $proc -Force -ErrorAction SilentlyContinue; Write-Output \"Killed PID $proc\")",
       "Bash(grep -v \"//\\\\|section-\")",
-      "Bash(powershell -NoProfile -Command \"Get-Process -Id 27928 -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,Path,StartTime\")"
+      "Bash(powershell -NoProfile -Command \"Get-Process -Id 27928 -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,Path,StartTime\")",
+      "Bash(mkdir -p \"C:/Users/faadh/.claude/skills\")",
+      "Bash(rm -rf C:/Users/faadh/.claude/skills/brag)",
+      "Bash(cp -r C:/Users/faadh/AppData/Local/Temp/claude/C--Users-faadh-OneDrive-Desktop-IXP-DSP-aiesechub-in/c01dc5cf-9960-4bfc-acb4-7f6fd4f79085/scratchpad/brag/skills/brag C:/Users/faadh/.claude/skills/brag)",
+      "Read(//c/Users/faadh/.claude/skills/**)",
+      "Read(//c/Users/faadh/.claude/skills/brag/assets/music/**)",
+      "Read(//c/Users/faadh/.claude/skills/brag/assets/music/cues/**)",
+      "Bash(npx hyperframes *)",
+      "Bash(npm install *)"
     ]
   }
 }
