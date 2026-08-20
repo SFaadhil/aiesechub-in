@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { GCP_MONTHS, gcpYearOptions, GCP_PORTFOLIOS, GCP_ENTITIES, GCP_TEXT_FIELDS } from '@/lib/gcp-data';
+import { GCP_MONTHS, gcpYearOptions, GCP_PORTFOLIOS, GCP_SUBMIT_ENTITIES, GCP_TEXT_FIELDS } from '@/lib/gcp-data';
 
 const YEARS = gcpYearOptions();
 
@@ -114,7 +114,7 @@ export default function GcpSubmitForm({ onClose, onSubmitted }) {
           <div className="gcp-field">
             <label className="gcp-label">Uploader Email<span className="required">*</span></label>
             <input className="gcp-input" type="email" required value={form.uploaderEmail}
-              onChange={(e) => update('uploaderEmail', e.target.value)} placeholder="you@aiesec.net" />
+              onChange={(e) => update('uploaderEmail', e.target.value)} placeholder="you@aiesec.in" />
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function GcpSubmitForm({ onClose, onSubmitted }) {
             <select className="gcp-select" required value={form.uploaderEntity}
               onChange={(e) => update('uploaderEntity', e.target.value)}>
               <option value="" disabled>Select entity</option>
-              {GCP_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
+              {GCP_SUBMIT_ENTITIES.map((e) => <option key={e} value={e}>{e}</option>)}
             </select>
           </div>
         </div>
