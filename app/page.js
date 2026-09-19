@@ -56,7 +56,7 @@ const FEATURED = [
     title: 'Rewards & Recognition',
     desc: 'National leaderboard and recognition for top-performing LCs.',
     color: '#f59e0b',
-    img: '/images/placeholder-cards/RnR.png',
+    img: '/images/placeholder-cards/ziddimania-card.jpg',
   },
 ];
 

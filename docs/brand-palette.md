@@ -313,6 +313,7 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 | RnR 26.2 | Metrics table swapped the invented `weightage` column for the sheet's real point bands + data source; grey `Cluster X` reuses the old Tier X grey `#8b9ab0` |
 | RnR 26.2 | New `.rnr-pending` blur-and-notice pattern for sections awaiting data — first use of a "results coming soon" state; amber `#f59e0b` badge matches the RnR page accent |
 | RnR 26.2 | RnR programme rebranded **MVP → ZiddiMania**: nav label (`Navbar.js`, homepage `CTA_LINKS`) and hero mark swapped to `/images/ziddimania-logo.png` (transparent PNG, cropped to artwork, 256-colour palette, 1200×575, 125 KB). `MVP logo.png` deleted. Logo palette — crimson/silver/black — is event branding, not a token set; no new CSS variables |
+| RnR 26.2 | Homepage RnR feature card art swapped to the ZiddiMania key visual (`/images/placeholder-cards/ziddimania-card.jpg`, 1200×500, 140 KB). Source 16:9 art was trimmed to ~2.4:1 so the "DEFY ODDS. CREATE LEGACY." lockup survives `.feature-card-img`'s `object-fit: cover` at every breakpoint, hover zoom included. `RnR.png` (old MVP art) deleted |
 
 ---
 
