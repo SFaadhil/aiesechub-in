@@ -71,7 +71,7 @@ const CTA_LINKS = [
   { href: '/aiesec-way',        label: 'AIESEC Way' },
   { href: '/functional-hub',    label: 'Functional Hub' },
   { href: '/conference-output', label: 'Conference Output' },
-  { href: '/rnr',               label: 'MVP' },
+  { href: '/rnr',               label: 'ZiddiMania' },
 ];
 
 export default function HomePage() {

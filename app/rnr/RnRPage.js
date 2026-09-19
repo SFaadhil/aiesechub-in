@@ -3,8 +3,8 @@
 import { useState, useMemo, Fragment } from 'react';
 import {
   PORTFOLIOS, RECOGNITION_PORTFOLIOS, TIER_PORTFOLIOS,
-  TIERS, TIER_META, TIERS_BY_PORTFOLIO, LC_PORTFOLIO_TIERS,
-  MONTHS_LIST, RNR_METRICS, METRICS_ORDER, MONTHLY_POINTS,
+  TIER_META, TIERS_BY_PORTFOLIO, LC_PORTFOLIO_TIERS, getTiersForPortfolio,
+  MONTHS_LIST, HAS_MONTHLY_DATA, RNR_METRICS, METRICS_ORDER, MONTHLY_POINTS,
   getDashboardDataForMonth, getRecognitionData,
 } from '@/lib/rnr-data';
 import PageOffline from '@/components/PageOffline';
@@ -13,12 +13,17 @@ const PAGE_STATUS_LIVE = true;
 
 const ACCENT = '#f59e0b';
 
+// Compact tier label for tight table cells: "Tier 3" → "T3", "Cluster X" → "CX"
+function shortTier(tier) {
+  return tier === 'Cluster X' ? 'CX' : tier.replace('Tier ', 'T');
+}
+
 function TierBadge({ tier, small, inline }) {
   if (!tier || tier === '—') {
     return <span style={{ fontSize: small ? 10 : 11, color: 'var(--text-3)', fontWeight: 600 }}>—</span>;
   }
   const { color, bg } = TIER_META[tier] || { color: '#8b9ab0', bg: '#f8fafc' };
-  const label = tier === 'Tier X' ? 'TX' : tier.replace('Tier ', 'T');
+  const label = shortTier(tier);
   return (
     <span style={{
       fontSize: small ? 10 : 11,
@@ -46,6 +51,74 @@ function SectionHeader({ eyebrow, title, desc }) {
   );
 }
 
+// Wraps a placeholder in a blur and floats a "results are coming" notice over it.
+// Used while a month's points are still being finalised.
+function ComingSoon({ title, body, children }) {
+  return (
+    <div className="rnr-pending">
+      <div className="rnr-pending-veil" aria-hidden="true">{children}</div>
+      <div className="rnr-pending-notice">
+        <div className="rnr-pending-card">
+          <span className="rnr-pending-badge">
+            <span className="rnr-pending-dot" />
+            Being finalised
+          </span>
+          <p className="rnr-pending-title">{title}</p>
+          <p className="rnr-pending-body">{body}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Bar({ w, h = 10 }) {
+  return <span className="rnr-skeleton-bar" style={{ width: w, height: h }} />;
+}
+
+// Blurred stand-in for the dashboard table
+function DashboardSkeleton() {
+  return (
+    <div style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'var(--radius-md)', overflow:'hidden' }}>
+      <div style={{ display:'flex', gap:16, padding:'14px 18px', background:'var(--bg-alt)', borderBottom:'2px solid var(--border)' }}>
+        <Bar w={28} /><Bar w={150} />
+        {[0,1,2,3,4,5].map((i) => <Bar key={i} w={72} />)}
+      </div>
+      {Array.from({ length: 9 }).map((_, r) => (
+        <div key={r} style={{ display:'flex', gap:16, alignItems:'center', padding:'13px 18px', borderBottom:'1px solid var(--border)' }}>
+          <Bar w={20} h={12} /><Bar w={150 - (r % 4) * 18} h={12} />
+          {[0,1,2,3,4,5].map((i) => <Bar key={i} w={72 - ((r + i) % 3) * 12} h={12} />)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Blurred stand-in for the recognition tier cards
+function RecognitionSkeleton() {
+  return (
+    <div className="row g-3">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="col-12 col-sm-6 col-lg-4">
+          <div style={{
+            background:'var(--surface)', border:'1px solid var(--border)',
+            borderTop:'3px solid var(--border-strong, var(--border))',
+            borderRadius:'var(--radius-md)', padding:'20px 20px 16px', height:'100%',
+          }}>
+            <div style={{ display:'flex', justifyContent:'space-between', marginBottom:14 }}>
+              <Bar w={62} h={13} /><Bar w={44} h={13} />
+            </div>
+            {Array.from({ length: 4 }).map((_, j) => (
+              <div key={j} style={{ display:'flex', justifyContent:'space-between', padding:'7px 0', borderBottom:'1px solid var(--border)' }}>
+                <Bar w={128 - j * 14} /><Bar w={40} />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function HeroSection() {
   return (
     <section style={{
@@ -67,7 +140,7 @@ function HeroSection() {
               color:ACCENT, marginBottom:20, letterSpacing:'0.5px', textTransform:'uppercase',
             }}>
               <span style={{ width:6, height:6, borderRadius:'50%', background:ACCENT, display:'inline-block' }} />
-              RnR ·  26.1
+              RnR ·  26.2
             </div>
 
             <h1 style={{
@@ -91,12 +164,13 @@ function HeroSection() {
               </p>
               {[
                 'Read the Minimums to Attain RnR sheet to understand minimum requirements.',
-                'View your portfolio and entity tier standings in the Tiers section below.',
+                'Tiers are updated every quarter from now on — check the Tiers section below.',
                 'Tiers vary per portfolio — your entity may be in Tier 1 for one portfolio and Tier 3 for another.',
+                'There is no Tier X in the portfolios this term. Expansions sit in a separate Cluster X for the overall entity standing.',
                 'A portfolio may not be recognised for any month if they fail respective product audits.',
                 'Understand the scoring system for your portfolio in the Metrics section.',
-              ].map((note, i) => (
-                <div key={i} style={{ display:'flex', gap:10, marginBottom:i<4?8:0 }}>
+              ].map((note, i, all) => (
+                <div key={i} style={{ display:'flex', gap:10, marginBottom:i<all.length-1?8:0 }}>
                   <span style={{ color:ACCENT, flexShrink:0, marginTop:2 }}>·</span>
                   <span style={{ fontSize:13.5, color:'rgba(255,255,255,0.6)', lineHeight:1.6 }}>{note}</span>
                 </div>
@@ -117,8 +191,8 @@ function HeroSection() {
               }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/MVP logo.png"
-                  alt="MVP Logo"
+                  src="/images/ziddimania-logo.png"
+                  alt="ZiddiMania"
                   style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                 />
               </div>
@@ -164,6 +238,30 @@ function HeroSection() {
 }
 
 function DashboardSection() {
+  return HAS_MONTHLY_DATA ? <DashboardLive /> : <DashboardPending />;
+}
+
+function DashboardPending() {
+  return (
+    <section id="dashboard" className="section-py" style={{ background:'var(--bg)' }}>
+      <div className="container-xl">
+        <SectionHeader
+          eyebrow="Rankings"
+          title="National Dashboard"
+          desc="Per-portfolio standings for every LC. Tier badges show each entity's tier within that specific portfolio."
+        />
+        <ComingSoon
+          title="August 2026 standings are out in a few days"
+          body="RnR has been revamped for the new MC term and August is the first month of the cycle. Points are being finalised now — the full dashboard goes live here as soon as they are signed off."
+        >
+          <DashboardSkeleton />
+        </ComingSoon>
+      </div>
+    </section>
+  );
+}
+
+function DashboardLive() {
   const [search, setSearch]         = useState('');
   const [activeTier, setActiveTier] = useState('All');
   const [activeMonth, setActiveMonth] = useState(MONTHS_LIST[MONTHS_LIST.length - 1].key);
@@ -352,7 +450,7 @@ function DashboardSection() {
                                   background:`${tierColor}12`, borderRadius:10, padding:'1px 6px',
                                   display:'inline-block',
                                 }}>
-                                  {pfTier === 'Tier X' ? 'TX' : pfTier.replace('Tier ','')}
+                                  {pfTier === 'Cluster X' ? 'CX' : pfTier.replace('Tier ','')}
                                 </span>
                               ) : (
                                 <span style={{ fontSize:10, color:'var(--text-3)' }}>—</span>
@@ -379,7 +477,33 @@ function DashboardSection() {
   );
 }
 
+const RECOGNITION_BG = { background:'var(--bg-alt)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' };
+
 function RecognitionSection() {
+  return HAS_MONTHLY_DATA ? <RecognitionLive /> : <RecognitionPending />;
+}
+
+function RecognitionPending() {
+  return (
+    <section id="recognition" className="section-py" style={RECOGNITION_BG}>
+      <div className="container-xl">
+        <SectionHeader
+          eyebrow="Monthly Recognition"
+          title="Recognition Table"
+          desc="Select a portfolio and month to see which LCs were recognised at each tier level."
+        />
+        <ComingSoon
+          title="August 2026 recognitions are out in a few days"
+          body="The first month of the new term is still being finalised. Tier-by-tier recognitions for every portfolio will appear here once the August scorecard is locked."
+        >
+          <RecognitionSkeleton />
+        </ComingSoon>
+      </div>
+    </section>
+  );
+}
+
+function RecognitionLive() {
   const [selectedPortfolio, setSelectedPortfolio] = useState('Entity');
   const [selectedMonth, setSelectedMonth]         = useState(MONTHS_LIST[MONTHS_LIST.length - 1].key);
 
@@ -391,7 +515,7 @@ function RecognitionSection() {
   }, [selectedPortfolio, selectedMonth]);
 
   return (
-    <section id="recognition" className="section-py" style={{ background:'var(--bg-alt)', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
+    <section id="recognition" className="section-py" style={RECOGNITION_BG}>
       <div className="container-xl">
         <SectionHeader
           eyebrow="Monthly Recognition"
@@ -417,7 +541,7 @@ function RecognitionSection() {
         </div>
 
         <div className="row g-3">
-          {TIERS.map((tier, i) => {
+          {getTiersForPortfolio(selectedPortfolio).map((tier, i) => {
             const { color, bg, label } = TIER_META[tier];
             const lcs = recData[tier] || [];
             return (
@@ -482,7 +606,7 @@ function TiersSection() {
         <SectionHeader
           eyebrow="Tier Structure"
           title="Portfolio Tiers"
-          desc="LC tier assignments for the current term. Tiers are computed from cumulative points across all months. Each portfolio has independent tier standings."
+          desc="LC tier assignments for term 26.2, updated every quarter. Each portfolio has independent tier standings, and expansion LCs now compete in them directly."
         />
 
         {/* Portfolio tabs */}
@@ -511,7 +635,7 @@ function TiersSection() {
         </p>
 
         <div className="row g-3">
-          {TIERS.map((tier, i) => {
+          {getTiersForPortfolio(activeKey).map((tier, i) => {
             const { color, bg, label } = TIER_META[tier];
             const lcs = tierData[tier] || [];
             return (
@@ -556,8 +680,10 @@ function TiersSection() {
           background:'rgba(139,154,176,0.08)', border:'1px solid rgba(139,154,176,0.2)',
           borderRadius:'var(--radius-sm)', fontSize:12.5, color:'var(--text-3)',
         }}>
-          <strong style={{ color:'var(--text-2)' }}>Note</strong> — 
-          A portfolio may not be recognised for any month if they fail respective product audits.
+          <strong style={{ color:'var(--text-2)' }}>Note</strong> —
+          There is no Tier X in the portfolios this term; expansion LCs are tiered alongside everyone else and are
+          grouped into Cluster X only for the overall entity standing. A portfolio may not be recognised for any
+          month if they fail respective product audits.
         </div>
       </div>
     </section>
@@ -574,7 +700,7 @@ function MetricsSection() {
         <SectionHeader
           eyebrow="Points Framework"
           title="RnR Metrics"
-          desc="Scoring parameters and weightages for each portfolio — updated for term 2026.1."
+          desc="Scoring parameters and point bands for each portfolio — updated for term 26.2."
         />
 
         {/* Portfolio tabs */}
@@ -610,8 +736,8 @@ function MetricsSection() {
                 <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
                   <thead>
                     <tr style={{ background:`${currentMetric.color}08`, borderBottom:'1px solid var(--border)' }}>
-                      {['Parameter','Scale / Criteria','Max Points','Weightage'].map((h) => (
-                        <th key={h} style={{ ...TH, textAlign: (h==='Max Points'||h==='Weightage') ? 'center' : 'left' }}>{h}</th>
+                      {['Parameter','Scale / Criteria','Max Points','Source'].map((h) => (
+                        <th key={h} style={{ ...TH, textAlign: h==='Max Points' ? 'center' : 'left' }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -622,19 +748,28 @@ function MetricsSection() {
                         onMouseEnter={(e) => e.currentTarget.style.background='var(--bg-alt)'}
                         onMouseLeave={(e) => e.currentTarget.style.background=''}
                       >
-                        <td style={{ ...TD, fontWeight:600, color:'var(--text)' }}>{row.parameter}</td>
-                        <td style={{ ...TD, color:'var(--text-2)', maxWidth:280 }}>{row.scale}</td>
+                        <td style={{ ...TD, fontWeight:600, color:'var(--text)', whiteSpace:'normal', minWidth:180 }}>
+                          {row.parameter}
+                        </td>
+                        <td style={{ ...TD, whiteSpace:'normal', minWidth:220 }}>
+                          {row.bands.map((band) => (
+                            <div key={band.scale} style={{ display:'flex', alignItems:'baseline', gap:8, padding:'2px 0' }}>
+                              <span style={{
+                                fontSize:11, fontWeight:700, color:currentMetric.color,
+                                background:`${currentMetric.color}12`, border:`1px solid ${currentMetric.color}25`,
+                                borderRadius:12, padding:'1px 8px', whiteSpace:'nowrap', flexShrink:0,
+                              }}>
+                                {band.points ?? '—'}
+                              </span>
+                              <span style={{ fontSize:12.5, color:'var(--text-2)' }}>{band.scale}</span>
+                            </div>
+                          ))}
+                        </td>
                         <td style={{ ...TD, textAlign:'center', fontWeight:700, color: row.maxPoints ? currentMetric.color : 'var(--text-3)' }}>
                           {row.maxPoints ?? 'Variable'}
                         </td>
-                        <td style={{ ...TD, textAlign:'center' }}>
-                          <span style={{
-                            fontSize:11.5, fontWeight:700, color:currentMetric.color,
-                            background:`${currentMetric.color}12`, border:`1px solid ${currentMetric.color}25`,
-                            borderRadius:12, padding:'2px 9px',
-                          }}>
-                            {row.weightage}
-                          </span>
+                        <td style={{ ...TD, whiteSpace:'normal', maxWidth:280, fontSize:12, color:'var(--text-3)' }}>
+                          {row.source ?? '—'}
                         </td>
                       </tr>
                     ))}

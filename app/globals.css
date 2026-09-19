@@ -2134,3 +2134,93 @@ img { transition: opacity 0.3s ease; }
   .gcp-modal { padding: 22px 18px; }
   .gcp-filter-bar { padding: 14px; }
 }
+
+/* ── RnR "results coming soon" state ──────────────────────────────── */
+/* A skeleton of the real table sits under a blur, with the notice floated
+   over it, so the section keeps its shape while a month is being finalised. */
+.rnr-pending {
+  position: relative;
+}
+
+.rnr-pending-veil {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rnr-pending-notice {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.rnr-pending-card {
+  max-width: 460px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 26px 28px;
+}
+
+.rnr-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+
+.rnr-pending-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f59e0b;
+  animation: rnrPendingPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes rnrPendingPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+.rnr-pending-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.rnr-pending-body {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin: 0;
+}
+
+.rnr-skeleton-bar {
+  display: inline-block;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--bg-alt), rgba(0, 0, 0, 0.06), var(--bg-alt));
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .rnr-pending-veil { filter: blur(3px); }
+  .rnr-pending-card { padding: 20px 18px; }
+}

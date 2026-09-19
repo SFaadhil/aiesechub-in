@@ -14,7 +14,7 @@ const NAV_LINKS_BEFORE = [
 
 const NAV_LINKS_AFTER = [
   { href: '/conference-output', label: 'Conference Output' },
-  { href: '/rnr',               label: 'MVP' },
+  { href: '/rnr',               label: 'ZiddiMania' },
   { href: '/gcp-hub',           label: 'GCP Hub' },
 ];
 

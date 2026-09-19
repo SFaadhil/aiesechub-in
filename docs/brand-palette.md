@@ -248,11 +248,14 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 
 ### RnR Dashboard (`app/rnr/RnRPage.js`)
 - Three sub-columns per portfolio: **Tier badge · Rank · Points**
-- Tier badge abbreviated (T1–T5, TX) with tier color from `TIER_META`
+- Tier badge abbreviated (T1–T5, CX) with tier color from `TIER_META`
 - `LC_PORTFOLIO_TIERS` reverse lookup for O(1) per-LC, per-portfolio tier access
 - Sticky first two columns (Rank + LC name) on horizontal scroll
 - Leaderboard table: dark header (`--text` bg, `--bg` text), 14px body cells
 - Filter bar: search input + tier toggle buttons + portfolio column toggles
+- Metrics table lists every scoring band as a `points` pill + criteria line, plus the sheet's data source
+- Pending state (`.rnr-pending`): a skeleton of the real table under `blur(4px)` / `opacity .6`, with a centred notice card floated over it. Used while a month's points are being finalised; driven by `HAS_MONTHLY_DATA` in `lib/rnr-data.js`
+- `.rnr-skeleton-bar`: shimmer placeholder bar, reuses the `shimmer` keyframes from `.gcp-skeleton-card`
 
 ### Page Hero (`components/PageHero.js`)
 - Light gradient bg (`--bg` → `--bg-alt`), coloured blob pseudo-elements
@@ -305,6 +308,11 @@ Background effects: `floatBlob` (12s / 16s, alternate direction) on blob pseudo-
 | GCP Hub | `/gcp-hub` (public) + `/login` (reviewer queue) added — first pages backed by a real datastore (Supabase). No new brand colours: portfolio badges reuse `lib/data.js` hub accents, approve/reject actions reuse existing `#00c16e` (FnL green) and `#c62828` (badge-pdf red) |
 | GCP Hub | New generic form-control classes (`.gcp-input` / `.gcp-select` / `.gcp-textarea` / `.gcp-label`) — first reusable form styling in the design system, modelled on `.search-box-input` |
 | GCP Hub | New card (`.gcp-card`), filter bar (`.gcp-filter-bar`), and modal (`.gcp-modal-backdrop` / `.gcp-modal`) patterns — modal reuses the search overlay's blur-backdrop + `fadeUp` animation approach |
+| RnR 26.2 | Tier X removed from portfolios; expansion LCs now tiered alongside everyone else, grouped into **Cluster X** on the entity standing only. `TIERS` replaced by `TIER_ORDER` + `getTiersForPortfolio()` so each portfolio renders only the tiers it uses |
+| RnR 26.2 | Expansions (`EXP`) added as a Tiers tab — it is tiered in its own cluster (Tier 1–2 only) |
+| RnR 26.2 | Metrics table swapped the invented `weightage` column for the sheet's real point bands + data source; grey `Cluster X` reuses the old Tier X grey `#8b9ab0` |
+| RnR 26.2 | New `.rnr-pending` blur-and-notice pattern for sections awaiting data — first use of a "results coming soon" state; amber `#f59e0b` badge matches the RnR page accent |
+| RnR 26.2 | RnR programme rebranded **MVP → ZiddiMania**: nav label (`Navbar.js`, homepage `CTA_LINKS`) and hero mark swapped to `/images/ziddimania-logo.png` (transparent PNG, cropped to artwork, 256-colour palette, 1200×575, 125 KB). `MVP logo.png` deleted. Logo palette — crimson/silver/black — is event branding, not a token set; no new CSS variables |
 
 ---
 
