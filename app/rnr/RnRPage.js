@@ -13,6 +13,14 @@ const PAGE_STATUS_LIVE = true;
 
 const ACCENT = '#f59e0b';
 
+// Hero-only palette, sampled from the ZiddiMania logo (its reds are pure:
+// #cc0000 dominant, #e40000 highlight). HERO_RED is the brighter of the two so
+// 11px labels still clear 4.5:1 against the near-black ground; HERO_RED_DEEP
+// carries the glows and tinted fills. Scoped to HeroSection — the rest of the
+// page keeps ACCENT.
+const HERO_RED      = '#ff3d3d';
+const HERO_RED_DEEP = '#cc0000';
+
 // Compact tier label for tight table cells: "Tier 3" → "T3", "Cluster X" → "CX"
 function shortTier(tier) {
   return tier === 'Cluster X' ? 'CX' : tier.replace('Tier ', 'T');
@@ -122,24 +130,24 @@ function RecognitionSkeleton() {
 function HeroSection() {
   return (
     <section style={{
-      background: 'linear-gradient(135deg, #1a0a00 0%, #2d1200 40%, #1a0a00 100%)',
+      background: 'linear-gradient(135deg, #0a0000 0%, #2b0406 45%, #0a0000 100%)',
       position: 'relative',
       overflow: 'hidden',
       padding: '36px 0 40px',
     }}>
-      <div style={{ position:'absolute', top:-60, right:-60, width:400, height:400, borderRadius:'50%', background:'rgba(245,158,11,0.15)', filter:'blur(80px)', pointerEvents:'none' }} />
-      <div style={{ position:'absolute', bottom:-80, left:-40, width:320, height:320, borderRadius:'50%', background:'rgba(245,158,11,0.08)', filter:'blur(60px)', pointerEvents:'none' }} />
+      <div style={{ position:'absolute', top:-60, right:-60, width:400, height:400, borderRadius:'50%', background:'rgba(204,0,0,0.22)', filter:'blur(80px)', pointerEvents:'none' }} />
+      <div style={{ position:'absolute', bottom:-80, left:-40, width:320, height:320, borderRadius:'50%', background:'rgba(228,0,0,0.10)', filter:'blur(60px)', pointerEvents:'none' }} />
 
       <div className="container-xl position-relative" style={{ zIndex: 1 }}>
         <div className="row align-items-start g-4">
           <div className="col-12 col-lg-7 animate-fade-up">
             <div style={{
               display:'inline-flex', alignItems:'center', gap:8,
-              background:'rgba(245,158,11,0.15)', border:'1px solid rgba(245,158,11,0.3)',
+              background:'rgba(204,0,0,0.18)', border:'1px solid rgba(255,61,61,0.35)',
               borderRadius:20, padding:'4px 14px', fontSize:12, fontWeight:700,
-              color:ACCENT, marginBottom:20, letterSpacing:'0.5px', textTransform:'uppercase',
+              color:HERO_RED, marginBottom:20, letterSpacing:'0.5px', textTransform:'uppercase',
             }}>
-              <span style={{ width:6, height:6, borderRadius:'50%', background:ACCENT, display:'inline-block' }} />
+              <span style={{ width:6, height:6, borderRadius:'50%', background:HERO_RED, display:'inline-block' }} />
               RnR ·  26.2
             </div>
 
@@ -148,7 +156,7 @@ function HeroSection() {
               letterSpacing:'-1px', color:'#fff', lineHeight:1.15, marginBottom:20,
             }}>
               Rewards &<br />
-              <span style={{ color:ACCENT }}>Recognition</span>
+              <span style={{ color:HERO_RED }}>Recognition</span>
             </h1>
 
             <p style={{ fontSize:16, lineHeight:1.8, color:'rgba(255,255,255,0.65)', maxWidth:520, marginBottom:32 }}>
@@ -156,7 +164,7 @@ function HeroSection() {
             </p>
 
             <div style={{
-              background:'rgba(255,255,255,0.05)', border:'1px solid rgba(245,158,11,0.2)',
+              background:'rgba(255,255,255,0.05)', border:'1px solid rgba(204,0,0,0.30)',
               borderRadius:12, padding:'20px 24px',
             }}>
               <p style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'1px', color:'rgba(255,255,255,0.4)', marginBottom:12 }}>
@@ -171,7 +179,7 @@ function HeroSection() {
                 'Understand the scoring system for your portfolio in the Metrics section.',
               ].map((note, i, all) => (
                 <div key={i} style={{ display:'flex', gap:10, marginBottom:i<all.length-1?8:0 }}>
-                  <span style={{ color:ACCENT, flexShrink:0, marginTop:2 }}>·</span>
+                  <span style={{ color:HERO_RED, flexShrink:0, marginTop:2 }}>·</span>
                   <span style={{ fontSize:13.5, color:'rgba(255,255,255,0.6)', lineHeight:1.6 }}>{note}</span>
                 </div>
               ))}
@@ -198,7 +206,7 @@ function HeroSection() {
               </div>
 
               <div style={{
-                background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.2)',
+                background:'rgba(204,0,0,0.10)', border:'1px solid rgba(204,0,0,0.30)',
                 borderRadius:16, padding:'20px 24px', marginBottom:12,
               }}>
                 <p style={{ fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'1px', color:'rgba(255,255,255,0.4)', marginBottom:16 }}>
@@ -211,7 +219,7 @@ function HeroSection() {
                   { label:'Email', value:'zahid.ahmed@aiesec.in' },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ display:'flex', gap:12, alignItems:'baseline', marginBottom:8 }}>
-                    <span style={{ fontSize:11, color:ACCENT, fontWeight:700, minWidth:44 }}>{label}</span>
+                    <span style={{ fontSize:11, color:HERO_RED, fontWeight:700, minWidth:44 }}>{label}</span>
                     <span style={{ fontSize:13.5, color:'rgba(255,255,255,0.75)' }}>{value}</span>
                   </div>
                 ))}
